@@ -2,7 +2,7 @@ import pandas as pd
 import subprocess, os, re
 
 df = pd.read_csv("/Users/dmk6603/Documents/swdb_opensource/1-indentify_open_source/MAIN.csv")
-CLONE_DIR = "/Users/dmk6603/Documents/cloned_repos_oss_swdb"
+CLONE_DIR = "/Users/dmk6603/Documents/cloned_repos_oss_swdb_2022"
 os.makedirs(CLONE_DIR, exist_ok=True)
 
 CUTOFF = "2023-01-01"  # ultimo commit PRIMA di questa data
