@@ -1,0 +1,2987 @@
+{
+    "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+    "bomFormat": "CycloneDX",
+    "specVersion": "1.6",
+    "serialNumber": "urn:uuid:3050272d-bfd6-4cf6-a451-b1af3462decb",
+    "version": 1,
+    "metadata": {
+        "timestamp": "2026-03-29T22:21:38-05:00",
+        "tools": {
+            "components": [
+                {
+                    "type": "application",
+                    "author": "anchore",
+                    "name": "syft",
+                    "version": "1.28.0"
+                }
+            ]
+        },
+        "component": {
+            "bom-ref": "9cca290560a669a3",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms"
+        }
+    },
+    "components": [
+        {
+            "bom-ref": "bd5df4d9092e9f3d",
+            "type": "application",
+            "name": "Win32NetBIOS",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:Win32NetBIOS:Win32NetBIOS:*:*:*:*:*:*:*:*",
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "pe-binary-package-cataloger"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "binary"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "pe-binary"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/lib/jni/Win32NetBIOS.dll"
+                }
+            ]
+        },
+        {
+            "bom-ref": "00985d2b92e648ba",
+            "type": "application",
+            "name": "Win32NetBIOSx64",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:Win32NetBIOSx64:Win32NetBIOSx64:*:*:*:*:*:*:*:*",
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "pe-binary-package-cataloger"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "binary"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "pe-binary"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/lib/jni/Win32NetBIOSx64.dll"
+                }
+            ]
+        },
+        {
+            "bom-ref": "5b5ba21022558b94",
+            "type": "application",
+            "name": "Win32Utils",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:Win32Utils:Win32Utils:*:*:*:*:*:*:*:*",
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "pe-binary-package-cataloger"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "binary"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "pe-binary"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/lib/jni/Win32Utils.dll"
+                }
+            ]
+        },
+        {
+            "bom-ref": "4647a89143a8b85c",
+            "type": "application",
+            "name": "Win32Utilsx64",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:Win32Utilsx64:Win32Utilsx64:*:*:*:*:*:*:*:*",
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "pe-binary-package-cataloger"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "binary"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "pe-binary"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/lib/jni/Win32Utilsx64.dll"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/db2jcc_license_cu/db2jcc_license_cu?package-id=56e93797e16bf350",
+            "type": "library",
+            "name": "db2jcc_license_cu",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:db2jcc-license-cu:db2jcc-license-cu:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/db2jcc_license_cu/db2jcc_license_cu",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "a9e47a8df830a250bf288f843440a98654aeacac"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc-license-cu:db2jcc_license_cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_license_cu:db2jcc-license-cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_license_cu:db2jcc_license_cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc-license:db2jcc-license-cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc-license:db2jcc_license_cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_license:db2jcc-license-cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_license:db2jcc_license_cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc:db2jcc-license-cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc:db2jcc_license_cu:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/db2/db2jcc_license_cu.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/db2/db2jcc_license_cu.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/db2jcc_v9/db2jcc_v9?package-id=358ec3e5f1e44304",
+            "type": "library",
+            "name": "db2jcc_v9",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:db2jcc-v9:db2jcc-v9:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/db2jcc_v9/db2jcc_v9",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "c22564dc3511069feee5d61a33a0e2058b81de60"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc-v9:db2jcc_v9:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_v9:db2jcc-v9:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc_v9:db2jcc_v9:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc:db2jcc-v9:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:db2jcc:db2jcc_v9:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/db2/db2jcc_v9.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/db2/db2jcc_v9.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/empty/empty?package-id=8a39e2b4a1a9bb6b",
+            "type": "library",
+            "name": "empty",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:empty:empty:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/empty/empty",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "9c62e9f5d9fa9938d495a565203b88444c6982fc"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/updatedata/empty.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/updatedata/empty.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/gradle-wrapper/gradle-wrapper?package-id=28364a9354fd35be",
+            "type": "library",
+            "name": "gradle-wrapper",
+            "version": "UNKNOWN",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "Apache-2.0"
+                    }
+                }
+            ],
+            "cpe": "cpe:2.3:a:gradle-wrapper:gradle-wrapper:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/gradle-wrapper/gradle-wrapper",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "abf08035a417f807e3d91c559b793ad20f5638ab"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:gradle-wrapper:gradle_wrapper:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:gradle_wrapper:gradle-wrapper:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:gradle_wrapper:gradle_wrapper:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:gradle:gradle-wrapper:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:gradle:gradle_wrapper:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/gradle/wrapper/gradle-wrapper.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/gradle/wrapper/gradle-wrapper.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/org.hsqldb.hsqldb/hsqldb@2.7.2?package-id=142c9dda7b0f908a",
+            "type": "library",
+            "name": "hsqldb",
+            "version": "2.7.2",
+            "cpe": "cpe:2.3:a:hsql-development-group:hsqldb:2.7.2:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/org.hsqldb.hsqldb/hsqldb@2.7.2",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "56abc2511747c4e117627b6ed05d6eaafd42fa5f"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:hsql_development_group:hsqldb:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.hsqldb.hsqldb:hsqldb:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:hsqldb:hsqldb:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/hsqldb/hsqldb-2.7.2.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/hsqldb/hsqldb-2.7.2.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/org.alfresco.jlan.app.JLANServer/jlan?package-id=b9ea8ee652919b53",
+            "type": "library",
+            "name": "jlan",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:org.alfresco.jlan.app.JLANServer:JLANServer:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/org.alfresco.jlan.app.JLANServer/jlan",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "de7c804fae5ad744e5a7e9a72fe1b7c5e72d610f"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.alfresco.jlan.app.JLANServer:jlan:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.alfresco.jlan.app.JLANServer:app:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:JLANServer:JLANServer:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:alfresco:JLANServer:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:JLANServer:jlan:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jlan:JLANServer:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:JLANServer:app:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:app:JLANServer:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:alfresco:jlan:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:alfresco:app:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jlan:jlan:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:app:jlan:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jlan:app:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:app:app:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/lib/runtime/jlan.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/lib/runtime/jlan.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/com.ibm.as400.access/jt400@JTOpen%206.0?package-id=57e3f54090db3f69",
+            "type": "library",
+            "name": "jt400",
+            "version": "JTOpen 6.0",
+            "cpe": "cpe:2.3:a:com.ibm.as400.util.commtrace:commtrace:JTOpen_6.0:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/com.ibm.as400.access/jt400@JTOpen%206.0",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "cbf59ca544fa8b371a72c4c84c78008d86d02d3c"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util.commtrace:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security.auth:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation-and-others:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation_and_others:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access.list:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.resource:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.security:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.vaccess:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.access:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.micro:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.data:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:com.ibm.as400.util:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm-corporation:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm_corporation:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:commtrace:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:commtrace:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:resource:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:security:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:resource:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:security:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:vaccess:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:access:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:vaccess:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:as400:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:access:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jt400:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:micro:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:auth:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:data:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:as400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:jt400:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:micro:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:list:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:util:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:auth:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:data:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:list:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ibm:util:JTOpen_6.0:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/as400/jt400.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/as400/jt400.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/org.mariadb.jdbc/mariadb-java-client@2.7.2?package-id=128a7245906c906c",
+            "type": "library",
+            "group": "org.mariadb.jdbc",
+            "name": "mariadb-java-client",
+            "version": "2.7.2",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "LGPL-2.1-only"
+                    }
+                }
+            ],
+            "cpe": "cpe:2.3:a:org.mariadb.jdbc.internal.osgi.MariaDbActivator:mariadb-java-client:2.7.2:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/org.mariadb.jdbc/mariadb-java-client@2.7.2",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "138fb9b8caee700bf4793bc42947113a1dbc8532"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.mariadb.jdbc.internal.osgi.MariaDbActivator:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb-java-client:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb-java-client:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb_java_client:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb_java_client:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:MariaDbActivator:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:MariaDbActivator:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.mariadb.jdbc:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.mariadb.jdbc:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb-java:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb-java:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb_java:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb_java:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:internal:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:internal:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mariadb:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:mariadb-java-client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:mariadb_java_client:2.7.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/mysql/mariadb-java-client-2.7.2.jar"
+                },
+                {
+                    "name": "syft:metadata:-:artifactID",
+                    "value": "mariadb-java-client"
+                },
+                {
+                    "name": "syft:metadata:-:groupID",
+                    "value": "org.mariadb.jdbc"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/mysql/mariadb-java-client-2.7.2.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/net.sourceforge.jtds.jdbc.Driver/mssql-jtds@1.2?package-id=4f2bb2e9fbd4398f",
+            "type": "library",
+            "name": "mssql-jtds",
+            "version": "1.2",
+            "cpe": "cpe:2.3:a:net.sourceforge.jtds.jdbc.Driver:mssql-jtds:1.2:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/net.sourceforge.jtds.jdbc.Driver/mssql-jtds@1.2",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "7226a1dd5b85779fcdfc45c9092b8c1fb7ae1711"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:net.sourceforge.jtds.jdbc.Driver:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:net.sourceforge.jtds.jdbc.Driver:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:net.sourceforge.jtds.jdbc.Driver:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:net.sourceforge.jtds.jdbc.Driver:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:sourceforge:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:sourceforge:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql-jtds:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql-jtds:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql_jtds:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql_jtds:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:sourceforge:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:Driver:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:Driver:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql-jtds:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql_jtds:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:sourceforge:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:sourceforge:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jtds:mssql-jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jtds:mssql_jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql-jtds:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql-jtds:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql_jtds:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql_jtds:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:Driver:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:Driver:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:Driver:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jtds:Driver:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:mssql:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jtds:jdbc:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jtds:jtds:1.2:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/mssql/mssql-jtds-1.2.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/mssql/mssql-jtds-1.2.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/ojdbc14/ojdbc14@10.2.0.3?package-id=fb9e1f7dceb79537",
+            "type": "library",
+            "name": "ojdbc14",
+            "version": "10.2.0.3",
+            "cpe": "cpe:2.3:a:oracle-corporation:ojdbc14:10.2.0.3:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/ojdbc14/ojdbc14@10.2.0.3",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "c19f869a5b401bc526a5149bd4b6b6314a688be9"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle_corporation:ojdbc14:10.2.0.3:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:ojdbc14:ojdbc14:10.2.0.3:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/oracle/ojdbc14-10.2.0.3.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/oracle/ojdbc14-10.2.0.3.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/opencms-legacy/opencms-legacy?package-id=83c2a177b737c981",
+            "type": "library",
+            "name": "opencms-legacy",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:opencms-legacy:opencms-legacy:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/opencms-legacy/opencms-legacy",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "30b6005df6e7c0f1332e0ec1ae1f316070352c2c"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms-legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/test/data/imports/multisite/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/test/data/imports/multisite/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip:types/opencms-legacy.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/opencms-legacy/opencms-legacy?package-id=f743a1958c3cba72",
+            "type": "library",
+            "name": "opencms-legacy",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:opencms-legacy:opencms-legacy:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/opencms-legacy/opencms-legacy",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "30b6005df6e7c0f1332e0ec1ae1f316070352c2c"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms-legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/test/data/imports/simpletest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/test/data/imports/simpletest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip:types/opencms-legacy.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/opencms-legacy/opencms-legacy?package-id=5be1ea55f0820794",
+            "type": "library",
+            "name": "opencms-legacy",
+            "version": "UNKNOWN",
+            "cpe": "cpe:2.3:a:opencms-legacy:opencms-legacy:*:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/opencms-legacy/opencms-legacy",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "30b6005df6e7c0f1332e0ec1ae1f316070352c2c"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms-legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms_legacy:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms-legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:opencms:opencms_legacy:*:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/test/data/imports/solrtest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/test/data/imports/solrtest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip:types/opencms-legacy.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "pkg:maven/org.postgresql/postgresql@42.7.7?package-id=63ae9c3877acf164",
+            "type": "library",
+            "name": "postgresql",
+            "version": "42.7.7",
+            "licenses": [
+                {
+                    "license": {
+                        "id": "BSD-2-Clause"
+                    }
+                }
+            ],
+            "cpe": "cpe:2.3:a:org.postgresql.osgi.PGBundleActivator:PGBundleActivator:42.7.7:*:*:*:*:*:*:*",
+            "purl": "pkg:maven/org.postgresql/postgresql@42.7.7",
+            "externalReferences": [
+                {
+                    "url": "",
+                    "hashes": [
+                        {
+                            "alg": "SHA-1",
+                            "content": "67f8093e8d8104c74bbf588392ac3229803f5d17"
+                        }
+                    ],
+                    "type": "build-meta"
+                }
+            ],
+            "properties": [
+                {
+                    "name": "syft:package:foundBy",
+                    "value": "java-archive-cataloger"
+                },
+                {
+                    "name": "syft:package:language",
+                    "value": "java"
+                },
+                {
+                    "name": "syft:package:type",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:package:metadataType",
+                    "value": "java-archive"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql-global-development-group:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql_global_development_group:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.osgi.PGBundleActivator:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql-global-development-group:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql_global_development_group:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.osgi.PGBundleActivator:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.osgi.PGBundleActivator:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql-global-development-group:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql-global-development-group:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql_global_development_group:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql_global_development_group:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.jdbc:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle-corporation:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle_corporation:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:PGBundleActivator:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.jdbc:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle-corporation:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle_corporation:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:PGBundleActivator:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.jdbc:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql.jdbc:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle-corporation:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle-corporation:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle_corporation:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:oracle_corporation:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:PGBundleActivator:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:PGBundleActivator:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:PGBundleActivator:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:org.postgresql:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:postgresql:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:postgresql:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:jdbc:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:jdbc:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:cpe23",
+                    "value": "cpe:2.3:a:osgi:osgi:42.7.7:*:*:*:*:*:*:*"
+                },
+                {
+                    "name": "syft:location:0:path",
+                    "value": "/webapp/WEB-INF/setupdata/database/postgresql/postgresql-42.7.7.jar"
+                },
+                {
+                    "name": "syft:metadata:virtualPath",
+                    "value": "/webapp/WEB-INF/setupdata/database/postgresql/postgresql-42.7.7.jar"
+                }
+            ]
+        },
+        {
+            "bom-ref": "803860b7b0aaa5b6",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/gradle/wrapper/gradle-wrapper.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "abf08035a417f807e3d91c559b793ad20f5638ab"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "2db75c40782f5e8ba1fc278a5574bab070adccb2d21ca5a6e5ed840888448046"
+                }
+            ]
+        },
+        {
+            "bom-ref": "b729e4a55a6ec277",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/lib/jni/Win32NetBIOS.dll",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "4f2c50542e0dad7176815adf40f961e560da827c"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "fba45efbe0329c5b0ed331179bc539c10741f5b27a61003717d2a664f5e7501f"
+                }
+            ]
+        },
+        {
+            "bom-ref": "6405677a8a2768ce",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/lib/jni/Win32NetBIOSx64.dll",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "8f10d88d1977cbe21a57e59d374c4501eb47b21f"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "e2b393da65fa466c3e072779118e5bc6b7cb9f6c8aa84e9bb68129aaab5493b6"
+                }
+            ]
+        },
+        {
+            "bom-ref": "1182b35837d295b7",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/lib/jni/Win32Utils.dll",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "bd2fc46b7f45d8395fab0d0e49c7470b7619a6a6"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "bcaa37a7c85bc2ae39749ff1580d9b67e88869812241900eef367ff1ac3b6e2c"
+                }
+            ]
+        },
+        {
+            "bom-ref": "24db1f094cab6e74",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/lib/jni/Win32Utilsx64.dll",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "90470fb2179f3ce85d3cba76c6d740d70ea99923"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "e03108f62c745d6a22c5241e533e3744b26bb6f32623749f378a602f39b54a82"
+                }
+            ]
+        },
+        {
+            "bom-ref": "3dbd054f6185a7e9",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/lib/runtime/jlan.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "de7c804fae5ad744e5a7e9a72fe1b7c5e72d610f"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "983047c861766e8ba180d83ceafd63420a51aaac1acf540deb854ee2976afb44"
+                }
+            ]
+        },
+        {
+            "bom-ref": "97dd663bdae22ed5",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/test/data/imports/multisite/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "9aaf508054d3c350fc68d5c90fe72ccb56ed06a3"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "c2b0c58fd6d31028fe3fae31979e7949e446dc781807d45be8752d2d598a22fd"
+                }
+            ]
+        },
+        {
+            "bom-ref": "6f0831b8fe99b13f",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/test/data/imports/simpletest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "9aaf508054d3c350fc68d5c90fe72ccb56ed06a3"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "c2b0c58fd6d31028fe3fae31979e7949e446dc781807d45be8752d2d598a22fd"
+                }
+            ]
+        },
+        {
+            "bom-ref": "1997fb1fbea44d24",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/test/data/imports/solrtest/sites/default/folder1/subfolder11/subsubfolder111/testdata.zip",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "9aaf508054d3c350fc68d5c90fe72ccb56ed06a3"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "c2b0c58fd6d31028fe3fae31979e7949e446dc781807d45be8752d2d598a22fd"
+                }
+            ]
+        },
+        {
+            "bom-ref": "a6916b96ed381b08",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/as400/jt400.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "cbf59ca544fa8b371a72c4c84c78008d86d02d3c"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "9ca4ede867586cffc96945736a8bde1f9e242636206d2bf4316a981a1eebf895"
+                }
+            ]
+        },
+        {
+            "bom-ref": "8827d4ffdd5223d4",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/db2/db2jcc_license_cu.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "a9e47a8df830a250bf288f843440a98654aeacac"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "7f7a59c7f16d3a75a2c9c0936b8fc656da73edc510f6d12ca068d833d17eb58b"
+                }
+            ]
+        },
+        {
+            "bom-ref": "224b1d742904c90f",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/db2/db2jcc_v9.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "c22564dc3511069feee5d61a33a0e2058b81de60"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "760e67ffae7caa081466f9712fd2440c4737490f72bd32a69adaed2e487f61a0"
+                }
+            ]
+        },
+        {
+            "bom-ref": "b47e493b6a2e09b7",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/hsqldb/hsqldb-2.7.2.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "56abc2511747c4e117627b6ed05d6eaafd42fa5f"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "5d33ef96b9c110847362664a731d4d64e95c405bbf0f209a493ce5ca0f1e160f"
+                }
+            ]
+        },
+        {
+            "bom-ref": "e570d3a2c2b3b724",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/mssql/mssql-jtds-1.2.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "7226a1dd5b85779fcdfc45c9092b8c1fb7ae1711"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "f15b06e9a5d543956c333a585778a7e223d1edb33c5aad35be28f47c3df4358b"
+                }
+            ]
+        },
+        {
+            "bom-ref": "e35419c8225a7778",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/mysql/mariadb-java-client-2.7.2.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "138fb9b8caee700bf4793bc42947113a1dbc8532"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "a3f6776df0842cf65e7f158515012d5307da949f66042282e1ee4474dd19f448"
+                }
+            ]
+        },
+        {
+            "bom-ref": "fba370476e2162ab",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/oracle/ojdbc14-10.2.0.3.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "c19f869a5b401bc526a5149bd4b6b6314a688be9"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "58828dfbda5c7fbd08bca87de1d623dadcaedd409c07eaa4fc426b7388113a49"
+                }
+            ]
+        },
+        {
+            "bom-ref": "88177c6e2e12a071",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/setupdata/database/postgresql/postgresql-42.7.7.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "67f8093e8d8104c74bbf588392ac3229803f5d17"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "157963d60ae66d607e09466e8c0cdf8087e9cb20d0159899ffca96bca2528460"
+                }
+            ]
+        },
+        {
+            "bom-ref": "9c3f2399fad77942",
+            "type": "file",
+            "name": "/Users/dmk6603/Documents/cloned_repos_oss_swdb/Alkacon_Software_GmbH-OpenCms/webapp/WEB-INF/updatedata/empty.jar",
+            "hashes": [
+                {
+                    "alg": "SHA-1",
+                    "content": "9c62e9f5d9fa9938d495a565203b88444c6982fc"
+                },
+                {
+                    "alg": "SHA-256",
+                    "content": "0a31f29022165e4a2200077dde15aa60cf3f7ce594098e43b01ea15130be12d9"
+                }
+            ]
+        }
+    ]
+}

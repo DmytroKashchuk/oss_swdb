@@ -1,0 +1,917 @@
+{% extends "base.html" %}
+
+{% block title %}Grype Analysis Browser{% endblock %}
+
+{% block extra_head %}
+<style>
+	.stat-cards {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .75rem;
+		margin-bottom: 1.25rem;
+	}
+	.stat-card {
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		padding: .6rem 1.1rem;
+		min-width: 140px;
+		text-align: center;
+		flex: 1 1 140px;
+	}
+	.stat-card .stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #333;
+	}
+	.stat-card .stat-label {
+		font-size: .75rem;
+		color: #888;
+		text-transform: uppercase;
+		letter-spacing: .3px;
+	}
+	.stat-card.products .stat-value { color: #333; }
+	.stat-card.vendors .stat-value { color: #fd7e14; }
+	.stat-card.categories .stat-value { color: #6f42c1; }
+	.stat-card.stars .stat-value { color: #ffc107; }
+	.stat-card.forks .stat-value { color: #0dcaf0; }
+	.stat-card.languages .stat-value { color: #198754; }
+	.stat-card.libraries .stat-value { color: #20c997; }
+	.stat-card.unique-libs .stat-value { color: #0d6efd; }
+	.stat-card.vulns .stat-value { color: #e74c3c; }
+	.stat-card.cves .stat-value { color: #dc3545; }
+	.stat-card.fixable .stat-value { color: #198754; }
+	.stat-card.not-fixed .stat-value { color: #dc3545; }
+	.stat-card.med-libs .stat-value { color: #0d6efd; }
+	.stat-card.med-vulns .stat-value { color: #d63384; }
+	.stat-card.avg-libs .stat-value { color: #0d6efd; }
+	.stat-card.avg-vulns .stat-value { color: #d63384; }
+	.stat-card.sev-critical .stat-value { color: #842029; }
+	.stat-card.sev-high .stat-value { color: #984c0c; }
+	.stat-card.sev-medium .stat-value { color: #664d03; }
+	.stat-card.sev-low .stat-value { color: #0f5132; }
+	.stat-card.vuln-libs .stat-value { color: #e67e22; }
+	.stat-card.pct-vuln .stat-value { color: #c0392b; }
+	.stat-card.pct-ent .stat-value { color: #2980b9; }
+	.stat-card.pct-fix .stat-value { color: #27ae60; }
+	.stat-card.active-count .stat-value { color: #27ae60; }
+	.stat-card.avg-cvss .stat-value { color: #e67e22; }
+	.stat-card.avg-epss .stat-value { color: #8e44ad; }
+	.stat-card.avg-risk .stat-value { color: #c0392b; }
+	.sev-badge {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		min-width: 24px;
+		text-align: center;
+	}
+	.sev-critical { background: #f8d7da; color: #842029; }
+	.sev-high { background: #ffe5d0; color: #984c0c; }
+	.sev-medium { background: #fff3cd; color: #664d03; }
+	.sev-low { background: #d1e7dd; color: #0f5132; }
+	.sev-zero { background: #f0f0f0; color: #999; }
+	.fixable-badge { background: #d1e7dd; color: #0f5132; }
+	.not-fixed-badge { background: #f8d7da; color: #842029; }
+	.stats-bar {
+		font-size: .82rem;
+		color: #666;
+		margin-bottom: .5rem;
+	}
+	#grype-table {
+		font-size: .82rem;
+	}
+	.github-link {
+		font-size: .78rem;
+		word-break: break-all;
+	}
+	.badge-lang {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		background: #e9ecef;
+		color: #495057;
+	}
+	.badge-archived {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		background: #f8d7da;
+		color: #842029;
+	}
+	.badge-active {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		background: #d1e7dd;
+		color: #0f5132;
+	}
+	.cwe-cell {
+		font-size: .7rem;
+		max-width: 300px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<h4 class="mb-3">Grype Analysis Browser</h4>
+
+	<!-- Stat Cards -->
+	<div class="stat-cards" id="statCards">
+		<div class="stat-card products">
+			<div class="stat-value" id="statTotal">-</div>
+			<div class="stat-label">Products</div>
+		</div>
+		<div class="stat-card vendors">
+			<div class="stat-value" id="statVendors">-</div>
+			<div class="stat-label">Vendors</div>
+		</div>
+		<div class="stat-card categories">
+			<div class="stat-value" id="statCategories">-</div>
+			<div class="stat-label">Categories</div>
+		</div>
+		<div class="stat-card stars">
+			<div class="stat-value" id="statStars">-</div>
+			<div class="stat-label">Total Stars</div>
+		</div>
+		<div class="stat-card forks">
+			<div class="stat-value" id="statForks">-</div>
+			<div class="stat-label">Total Forks</div>
+		</div>
+		<div class="stat-card languages">
+			<div class="stat-value" id="statLanguages">-</div>
+			<div class="stat-label">Languages</div>
+		</div>
+		<div class="stat-card libraries">
+			<div class="stat-value" id="statTotalLibs">-</div>
+			<div class="stat-label">Total Libraries</div>
+		</div>
+		<div class="stat-card unique-libs">
+			<div class="stat-value" id="statUniqueLibs">-</div>
+			<div class="stat-label">Unique Libraries</div>
+		</div>
+		<div class="stat-card med-libs">
+			<div class="stat-value" id="statMedLibs">-</div>
+			<div class="stat-label">Median Libraries</div>
+		</div>
+		<div class="stat-card avg-libs">
+			<div class="stat-value" id="statAvgLibs">-</div>
+			<div class="stat-label">Avg Libraries</div>
+		</div>
+		<div class="stat-card vuln-libs">
+			<div class="stat-value" id="statVulnLibs">-</div>
+			<div class="stat-label">Vuln Lib Count</div>
+		</div>
+		<div class="stat-card pct-vuln">
+			<div class="stat-value" id="statPctVuln">-</div>
+			<div class="stat-label">Avg % Libs Vulnerable</div>
+		</div>
+		<div class="stat-card vulns">
+			<div class="stat-value" id="statTotalVulns">-</div>
+			<div class="stat-label">Total Vulns</div>
+		</div>
+		<div class="stat-card cves">
+			<div class="stat-value" id="statUniqueCves">-</div>
+			<div class="stat-label">Unique CVEs</div>
+		</div>
+		<div class="stat-card med-vulns">
+			<div class="stat-value" id="statMedVulns">-</div>
+			<div class="stat-label">Median Vulns</div>
+		</div>
+		<div class="stat-card avg-vulns">
+			<div class="stat-value" id="statAvgVulns">-</div>
+			<div class="stat-label">Avg Vulns</div>
+		</div>
+		<div class="stat-card sev-critical">
+			<div class="stat-value" id="statCritical">-</div>
+			<div class="stat-label">Critical</div>
+		</div>
+		<div class="stat-card sev-high">
+			<div class="stat-value" id="statHigh">-</div>
+			<div class="stat-label">High</div>
+		</div>
+		<div class="stat-card sev-medium">
+			<div class="stat-value" id="statMedium">-</div>
+			<div class="stat-label">Medium</div>
+		</div>
+		<div class="stat-card sev-low">
+			<div class="stat-value" id="statLow">-</div>
+			<div class="stat-label">Low</div>
+		</div>
+		<div class="stat-card fixable">
+			<div class="stat-value" id="statFixable">-</div>
+			<div class="stat-label">Fixable</div>
+		</div>
+		<div class="stat-card not-fixed">
+			<div class="stat-value" id="statNotFixed">-</div>
+			<div class="stat-label">Not Fixed</div>
+		</div>
+		<div class="stat-card pct-fix">
+			<div class="stat-value" id="statPctFixable">-</div>
+			<div class="stat-label">Avg % Fixable</div>
+		</div>
+		<div class="stat-card avg-cvss">
+			<div class="stat-value" id="statAvgCvss">-</div>
+			<div class="stat-label">Avg CVSS</div>
+		</div>
+		<div class="stat-card avg-risk">
+			<div class="stat-value" id="statAvgRisk">-</div>
+			<div class="stat-label">Avg Risk</div>
+		</div>
+		<div class="stat-card avg-epss">
+			<div class="stat-value" id="statAvgEpss">-</div>
+			<div class="stat-label">Avg EPSS</div>
+		</div>
+		<div class="stat-card pct-ent">
+			<div class="stat-value" id="statAvgPctEnt">-</div>
+			<div class="stat-label">Avg % Enterprises</div>
+		</div>
+		<div class="stat-card active-count">
+			<div class="stat-value" id="statActive">-</div>
+			<div class="stat-label">Active</div>
+		</div>
+	</div>
+
+	<div class="stats-bar">
+		Showing <strong id="rowCount">0</strong> of <strong id="totalCount">0</strong> records
+	</div>
+
+	<div id="grype-table"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	var allData = [];
+
+	function parseNum(v) {
+		if (!v) return 0;
+		return parseInt(String(v).replace(/,/g, ""), 10) || 0;
+	}
+	function parseFloat2(v) {
+		var f = parseFloat(v);
+		return isNaN(f) ? 0 : f;
+	}
+
+	function numFormatter(cell) {
+		var v = parseNum(cell.getValue());
+		return v ? v.toLocaleString() : "";
+	}
+	function floatFormatter(cell) {
+		var v = parseFloat2(cell.getValue());
+		return v ? v.toFixed(2) : "";
+	}
+	function pctFormatter(cell) {
+		var v = parseFloat2(cell.getValue());
+		return v ? v.toFixed(2) + "%" : "";
+	}
+	function floatSorter(a, b) {
+		return parseFloat2(a) - parseFloat2(b);
+	}
+
+	function linkFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		var escaped = v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+		var short = v.replace(/^https?:\/\/(www\.)?github\.com\//, "");
+		return '<a class="github-link" href="' + escaped + '" target="_blank" rel="noopener noreferrer">' + short + '</a>';
+	}
+
+	function langFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		return '<span class="badge-lang">' + v + '</span>';
+	}
+
+	function langsFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		return v.split(";").map(function (l) {
+			l = l.trim();
+			return l ? '<span class="badge-lang">' + l + '</span>' : "";
+		}).filter(Boolean).join(" ");
+	}
+
+	function archivedFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (v === "True") return '<span class="badge-archived">Archived</span>';
+		if (v === "False") return '<span class="badge-active">Active</span>';
+		return "";
+	}
+
+	function boolFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (v === "True") return '<span class="badge-active">Yes</span>';
+		if (v === "False") return '<span class="badge-archived">No</span>';
+		return "";
+	}
+
+	function numSorter(a, b) {
+		return parseNum(a) - parseNum(b);
+	}
+
+	function sevFormatter(cell) {
+		var v = parseNum(cell.getValue());
+		var field = cell.getColumn().getField();
+		var cls = "sev-zero";
+		if (v > 0) {
+			if (field === "critical") cls = "sev-critical";
+			else if (field === "high") cls = "sev-high";
+			else if (field === "medium") cls = "sev-medium";
+			else if (field === "low") cls = "sev-low";
+			else if (field === "fixable") cls = "fixable-badge";
+			else if (field === "not_fixed") cls = "not-fixed-badge";
+		}
+		return '<span class="sev-badge ' + cls + '">' + v + '</span>';
+	}
+
+	function numMinFilter(hv, rv) { return parseNum(rv) >= parseNum(hv); }
+	function floatMinFilter(hv, rv) { return parseFloat2(rv) >= parseFloat2(hv); }
+
+	var table = new Tabulator("#grype-table", {
+		height: "65vh",
+		layout: "fitDataFill",
+		placeholder: "Loading data…",
+		pagination: true,
+		paginationSize: 50,
+		paginationSizeSelector: [25, 50, 100, 250, 500],
+		movableColumns: true,
+		headerSortTriState: true,
+		initialSort: [{ column: "total_vulns", dir: "desc" }],
+		columns: [
+			{
+				title: "Vendor",
+				field: "VendorName",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
+			{
+				title: "Product",
+				field: "Product",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 200,
+			},
+			{
+				title: "Category",
+				field: "ProductCategory",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 200,
+			},
+			{
+				title: "Total Libs",
+				field: "total_libraries",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 100,
+			},
+			{
+				title: "Unique Libs",
+				field: "unique_libraries",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 110,
+			},
+			{
+				title: "Syft Languages",
+				field: "syft_languages",
+				formatter: langsFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
+			{
+				title: "Syft Pkg Types",
+				field: "syft_pkg_types",
+				formatter: langsFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 180,
+			},
+			{
+				title: "Lib Versions",
+				field: "unique_lib_versions",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 110,
+			},
+			{
+				title: "Vuln Libs",
+				field: "vuln_lib_count",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 100,
+			},
+			{
+				title: "% Libs Vuln",
+				field: "pct_libs_vulnerable",
+				sorter: floatSorter,
+				formatter: pctFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 110,
+			},
+			{
+				title: "Total Vulns",
+				field: "total_vulns",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 100,
+			},
+			{
+				title: "Unique CVEs",
+				field: "unique_cves",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 110,
+			},
+			{
+				title: "Critical",
+				field: "critical",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 90,
+			},
+			{
+				title: "High",
+				field: "high",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 80,
+			},
+			{
+				title: "Medium",
+				field: "medium",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 90,
+			},
+			{
+				title: "Low",
+				field: "low",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 80,
+			},
+			{
+				title: "Fixable",
+				field: "fixable",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 90,
+			},
+			{
+				title: "Not Fixed",
+				field: "not_fixed",
+				sorter: numSorter,
+				formatter: sevFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 100,
+			},
+			{
+				title: "% Fixable",
+				field: "pct_fixable",
+				sorter: floatSorter,
+				formatter: pctFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 100,
+			},
+			{
+				title: "Avg CVSS",
+				field: "avg_cvss",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 100,
+			},
+			{
+				title: "Max CVSS",
+				field: "max_cvss",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				width: 100,
+			},
+			{
+				title: "Avg Risk",
+				field: "avg_risk",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 95,
+			},
+			{
+				title: "Max Risk",
+				field: "max_risk",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				width: 95,
+			},
+			{
+				title: "Avg EPSS",
+				field: "avg_epss",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 95,
+			},
+			{
+				title: "Max EPSS",
+				field: "max_epss",
+				sorter: floatSorter,
+				formatter: floatFormatter,
+				hozAlign: "right",
+				width: 95,
+			},
+			{
+				title: "Grype Languages",
+				field: "grype_languages",
+				formatter: langsFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
+			{
+				title: "Grype Pkg Types",
+				field: "grype_pkg_types",
+				formatter: langsFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 180,
+			},
+			{
+				title: "CWEs",
+				field: "cwes",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				formatter: function (cell) {
+					var v = (cell.getValue() || "").trim();
+					if (!v) return "";
+					return '<span class="cwe-cell" title="' + v.replace(/"/g, '&quot;') + '">' + v + '</span>';
+				},
+				width: 250,
+			},
+			{
+				title: "Stars",
+				field: "gh_stars",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numMinFilter,
+				width: 95,
+			},
+			{
+				title: "Forks",
+				field: "gh_forks",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 90,
+			},
+			{
+				title: "Issues",
+				field: "gh_open_issues",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 90,
+			},
+			{
+				title: "Watchers",
+				field: "gh_watchers",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 100,
+			},
+			{
+				title: "Language",
+				field: "gh_language",
+				formatter: langFormatter,
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 110,
+			},
+			{
+				title: "License",
+				field: "gh_license",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 120,
+			},
+			{
+				title: "Status",
+				field: "gh_archived",
+				formatter: archivedFormatter,
+				hozAlign: "center",
+				headerFilter: "list",
+				headerFilterParams: { values: { "": "All", "False": "Active", "True": "Archived" } },
+				headerFilterPlaceholder: "All…",
+				width: 100,
+			},
+			{
+				title: "Created",
+				field: "gh_created_at",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 120,
+			},
+			{
+				title: "Updated",
+				field: "gh_updated_at",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 120,
+			},
+			{
+				title: "Pushed",
+				field: "gh_pushed_at",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 120,
+			},
+			{
+				title: "Branch",
+				field: "gh_default_branch",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 100,
+			},
+			{
+				title: "Size (KB)",
+				field: "gh_size_kb",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 100,
+			},
+			{
+				title: "SBOM File",
+				field: "sbom_file",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
+			{
+				title: "Vuln File",
+				field: "vuln_file",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
+			{
+				title: "Total Sites",
+				field: "Total Sites",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 110,
+			},
+			{
+				title: "US Sites",
+				field: "US Sites",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 100,
+			},
+			{
+				title: "Total Enterprises",
+				field: "Total Enterprises",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 130,
+			},
+			{
+				title: "Enterprises US",
+				field: "Enterprises in US",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				width: 130,
+			},
+			{
+				title: "% Enterprises",
+				field: "pct_enterprises",
+				sorter: floatSorter,
+				formatter: pctFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: floatMinFilter,
+				width: 120,
+			},
+			{
+				title: "Active",
+				field: "active",
+				formatter: boolFormatter,
+				hozAlign: "center",
+				headerFilter: "list",
+				headerFilterParams: { values: { "": "All", "True": "Yes", "False": "No" } },
+				headerFilterPlaceholder: "All…",
+				width: 90,
+			},
+			{
+				title: "Repo",
+				field: "repo_url",
+				formatter: linkFormatter,
+				width: 220,
+			},
+		],
+	});
+
+	function median(arr) {
+		if (!arr.length) return 0;
+		var sorted = arr.slice().sort(function (a, b) { return a - b; });
+		var mid = Math.floor(sorted.length / 2);
+		return sorted.length % 2 !== 0 ? sorted[mid] : Math.round((sorted[mid - 1] + sorted[mid]) / 2);
+	}
+
+	function refreshStats() {
+		var rows = table.getRows("active");
+		var items = rows.map(function (r) { return r.getData(); });
+
+		document.getElementById("rowCount").textContent = items.length;
+		document.getElementById("totalCount").textContent = allData.length;
+
+		var vendors = new Set();
+		var categories = new Set();
+		var languages = new Set();
+		var totalStars = 0, totalForks = 0;
+		var totalVulns = 0, totalUniqueCves = 0;
+		var totalLibs = 0, totalUniqueLibs = 0;
+		var totalFixable = 0, totalNotFixed = 0;
+		var totalCritical = 0, totalHigh = 0, totalMedium = 0, totalLow = 0;
+		var totalVulnLibCount = 0;
+		var pctVulnSum = 0, pctEntSum = 0, pctFixSum = 0;
+		var cvssSum = 0, riskSum = 0, epssSum = 0;
+		var cvssCount = 0, riskCount = 0, epssCount = 0;
+		var activeCount = 0;
+		var libArr = [], vulnArr = [];
+
+		items.forEach(function (r) {
+			if (r.VendorName) vendors.add(r.VendorName);
+			if (r.ProductCategory) categories.add(r.ProductCategory);
+			var lang = (r.gh_language || "").trim();
+			if (lang) languages.add(lang);
+			totalStars += parseNum(r.gh_stars);
+			totalForks += parseNum(r.gh_forks);
+			var tl = parseNum(r.total_libraries);
+			var ul = parseNum(r.unique_libraries);
+			var tv = parseNum(r.total_vulns);
+			var uc = parseNum(r.unique_cves);
+			totalLibs += tl;
+			totalUniqueLibs += ul;
+			totalVulns += tv;
+			totalUniqueCves += uc;
+			libArr.push(tl);
+			vulnArr.push(tv);
+			totalFixable += parseNum(r.fixable);
+			totalNotFixed += parseNum(r.not_fixed);
+			totalCritical += parseNum(r.critical);
+			totalHigh += parseNum(r.high);
+			totalMedium += parseNum(r.medium);
+			totalLow += parseNum(r.low);
+			totalVulnLibCount += parseNum(r.vuln_lib_count);
+			pctVulnSum += parseFloat2(r.pct_libs_vulnerable);
+			pctEntSum += parseFloat2(r.pct_enterprises);
+			pctFixSum += parseFloat2(r.pct_fixable);
+			var ac = parseFloat2(r.avg_cvss);
+			if (ac > 0) { cvssSum += ac; cvssCount++; }
+			var ar = parseFloat2(r.avg_risk);
+			if (ar > 0) { riskSum += ar; riskCount++; }
+			var ae = parseFloat2(r.avg_epss);
+			if (ae > 0) { epssSum += ae; epssCount++; }
+			if ((r.active || "").trim() === "True") activeCount++;
+		});
+
+		var n = items.length || 1;
+		document.getElementById("statTotal").textContent = items.length.toLocaleString();
+		document.getElementById("statVendors").textContent = vendors.size.toLocaleString();
+		document.getElementById("statCategories").textContent = categories.size.toLocaleString();
+		document.getElementById("statStars").textContent = totalStars.toLocaleString();
+		document.getElementById("statForks").textContent = totalForks.toLocaleString();
+		document.getElementById("statLanguages").textContent = languages.size.toLocaleString();
+		document.getElementById("statTotalLibs").textContent = totalLibs.toLocaleString();
+		document.getElementById("statUniqueLibs").textContent = totalUniqueLibs.toLocaleString();
+		document.getElementById("statMedLibs").textContent = median(libArr).toLocaleString();
+		document.getElementById("statAvgLibs").textContent = (totalLibs / n).toFixed(1);
+		document.getElementById("statVulnLibs").textContent = totalVulnLibCount.toLocaleString();
+		document.getElementById("statPctVuln").textContent = (pctVulnSum / n).toFixed(2) + "%";
+		document.getElementById("statTotalVulns").textContent = totalVulns.toLocaleString();
+		document.getElementById("statUniqueCves").textContent = totalUniqueCves.toLocaleString();
+		document.getElementById("statMedVulns").textContent = median(vulnArr).toLocaleString();
+		document.getElementById("statAvgVulns").textContent = (totalVulns / n).toFixed(1);
+		document.getElementById("statCritical").textContent = totalCritical.toLocaleString();
+		document.getElementById("statHigh").textContent = totalHigh.toLocaleString();
+		document.getElementById("statMedium").textContent = totalMedium.toLocaleString();
+		document.getElementById("statLow").textContent = totalLow.toLocaleString();
+		document.getElementById("statFixable").textContent = totalFixable.toLocaleString();
+		document.getElementById("statNotFixed").textContent = totalNotFixed.toLocaleString();
+		document.getElementById("statPctFixable").textContent = (pctFixSum / n).toFixed(2) + "%";
+		document.getElementById("statAvgCvss").textContent = cvssCount ? (cvssSum / cvssCount).toFixed(2) : "-";
+		document.getElementById("statAvgRisk").textContent = riskCount ? (riskSum / riskCount).toFixed(2) : "-";
+		document.getElementById("statAvgEpss").textContent = epssCount ? (epssSum / epssCount).toFixed(2) : "-";
+		document.getElementById("statAvgPctEnt").textContent = (pctEntSum / n).toFixed(2) + "%";
+		document.getElementById("statActive").textContent = activeCount.toLocaleString();
+	}
+
+	table.on("dataFiltered", function () { setTimeout(refreshStats, 0); });
+
+	fetch("{{ url_for('api_grype') }}")
+		.then(function (res) { return res.json(); })
+		.then(function (data) {
+			allData = data;
+			table.setData(data).then(function () { refreshStats(); });
+		})
+		.catch(function (err) {
+			document.getElementById("grype-table").innerHTML =
+				'<div class="alert alert-danger">Failed to load data: ' + err.message + '</div>';
+		});
+});
+</script>
+{% endblock %}

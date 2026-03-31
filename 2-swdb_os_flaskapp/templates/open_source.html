@@ -1,0 +1,227 @@
+{% extends "base.html" %}
+
+{% block title %}Open Source Classification Browser{% endblock %}
+
+{% block extra_head %}
+<style>
+	.stat-cards {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .75rem;
+		margin-bottom: 1.25rem;
+	}
+	.stat-card {
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		padding: .6rem 1.1rem;
+		min-width: 150px;
+		text-align: center;
+		flex: 1 1 150px;
+	}
+	.stat-card .stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #333;
+	}
+	.stat-card .stat-label {
+		font-size: .75rem;
+		color: #888;
+		text-transform: uppercase;
+		letter-spacing: .3px;
+	}
+	.stat-card.open-source .stat-value { color: #198754; }
+	.stat-card.closed-source .stat-value { color: #dc3545; }
+	.stat-card.has-github .stat-value { color: #0d6efd; }
+	.stat-card.categories .stat-value { color: #6f42c1; }
+	.stat-card.vendors .stat-value { color: #fd7e14; }
+	.stats-bar {
+		font-size: .82rem;
+		color: #666;
+		margin-bottom: .5rem;
+	}
+	#os-table {
+		font-size: .85rem;
+	}
+	.badge-yes {
+		display: inline-block;
+		padding: 2px 8px;
+		border-radius: 3px;
+		font-size: .78rem;
+		font-weight: 600;
+		background: #d1e7dd;
+		color: #0f5132;
+	}
+	.badge-no {
+		display: inline-block;
+		padding: 2px 8px;
+		border-radius: 3px;
+		font-size: .78rem;
+		font-weight: 600;
+		background: #f8d7da;
+		color: #842029;
+	}
+	.github-link {
+		font-size: .8rem;
+		word-break: break-all;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<h4 class="mb-3">Open Source Classification Browser</h4>
+
+	<!-- Stat Cards -->
+	<div class="stat-cards" id="statCards">
+		<div class="stat-card">
+			<div class="stat-value" id="statTotal">-</div>
+			<div class="stat-label">Total Products</div>
+		</div>
+		<div class="stat-card vendors">
+			<div class="stat-value" id="statVendors">-</div>
+			<div class="stat-label">Vendors</div>
+		</div>
+		<div class="stat-card categories">
+			<div class="stat-value" id="statCategories">-</div>
+			<div class="stat-label">Categories</div>
+		</div>
+		<div class="stat-card open-source">
+			<div class="stat-value" id="statOpenSource">-</div>
+			<div class="stat-label">Open Source</div>
+		</div>
+		<div class="stat-card closed-source">
+			<div class="stat-value" id="statClosedSource">-</div>
+			<div class="stat-label">Closed Source</div>
+		</div>
+		<div class="stat-card has-github">
+			<div class="stat-value" id="statGitHub">-</div>
+			<div class="stat-label">With GitHub Link</div>
+		</div>
+	</div>
+
+	<div class="stats-bar">
+		Showing <strong id="rowCount">0</strong> of <strong id="totalCount">0</strong> records
+	</div>
+
+	<div id="os-table"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	var allData = [];
+
+	function openSourceFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (v === "Yes") return '<span class="badge-yes">Yes</span>';
+		return '<span class="badge-no">No</span>';
+	}
+
+	function githubFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		var escaped = v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+		return '<a class="github-link" href="' + escaped + '" target="_blank" rel="noopener noreferrer">' + escaped + '</a>';
+	}
+
+	var table = new Tabulator("#os-table", {
+		height: "65vh",
+		layout: "fitDataFill",
+		placeholder: "Loading data…",
+		pagination: true,
+		paginationSize: 50,
+		paginationSizeSelector: [25, 50, 100, 250, 500],
+		movableColumns: true,
+		headerSortTriState: true,
+		initialSort: [{ column: "VendorName", dir: "asc" }],
+		columns: [
+			{
+				title: "Vendor",
+				field: "VendorName",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 180,
+			},
+			{
+				title: "Product",
+				field: "Product",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 220,
+			},
+			{
+				title: "Category",
+				field: "ProductCategory",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 220,
+			},
+			{
+				title: "Open Source",
+				field: "IsOpenSource",
+				formatter: openSourceFormatter,
+				hozAlign: "center",
+				headerFilter: "list",
+				headerFilterParams: { values: { "": "All", "Yes": "Yes", "No": "No" } },
+				headerFilterPlaceholder: "All…",
+				width: 120,
+			},
+			{
+				title: "GitHub Link",
+				field: "GitHubLink",
+				formatter: githubFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 320,
+			},
+		],
+	});
+
+	function refreshStats() {
+		var rows = table.getRows("active");
+		var items = rows.map(function (r) { return r.getData(); });
+
+		document.getElementById("rowCount").textContent = items.length;
+		document.getElementById("totalCount").textContent = allData.length;
+
+		var vendors = new Set();
+		var categories = new Set();
+		var openSource = 0;
+		var closedSource = 0;
+		var withGitHub = 0;
+
+		items.forEach(function (r) {
+			if (r.VendorName) vendors.add(r.VendorName);
+			if (r.ProductCategory) categories.add(r.ProductCategory);
+			if ((r.IsOpenSource || "").trim() === "Yes") openSource++;
+			else closedSource++;
+			if ((r.GitHubLink || "").trim()) withGitHub++;
+		});
+
+		document.getElementById("statTotal").textContent = items.length.toLocaleString();
+		document.getElementById("statVendors").textContent = vendors.size.toLocaleString();
+		document.getElementById("statCategories").textContent = categories.size.toLocaleString();
+		document.getElementById("statOpenSource").textContent = openSource.toLocaleString();
+		document.getElementById("statClosedSource").textContent = closedSource.toLocaleString();
+		document.getElementById("statGitHub").textContent = withGitHub.toLocaleString();
+	}
+
+	table.on("dataFiltered", function () { setTimeout(refreshStats, 0); });
+
+	fetch("{{ url_for('api_data') }}")
+		.then(function (res) { return res.json(); })
+		.then(function (data) {
+			allData = data;
+			table.setData(data).then(function () { refreshStats(); });
+		})
+		.catch(function (err) {
+			document.getElementById("os-table").innerHTML =
+				'<div class="alert alert-danger">Failed to load data: ' + err.message + '</div>';
+		});
+});
+</script>
+{% endblock %}

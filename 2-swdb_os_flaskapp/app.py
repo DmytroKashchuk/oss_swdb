@@ -1,0 +1,72 @@
+import csv
+import os
+
+import markdown
+from flask import Flask, jsonify, render_template
+from markupsafe import Markup
+
+app = Flask(__name__)
+
+README_PATH = os.path.join(os.path.dirname(__file__), "README.md")
+
+DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "open_source_classification.csv")
+MAIN_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "MAIN.csv")
+UNIVERSE_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "swdb_universe_installs.csv")
+GRYPE_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "MAIN_w_grype.csv")
+
+
+def load_csv(path=None):
+    with open(path or DATA_PATH, newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
+
+
+@app.route("/")
+def index():
+    return render_template("open_source.html")
+
+
+@app.route("/api/data")
+def api_data():
+    return jsonify(load_csv())
+
+
+@app.route("/main")
+def main_data():
+    return render_template("main.html")
+
+
+@app.route("/api/main")
+def api_main():
+    return jsonify(load_csv(MAIN_DATA_PATH))
+
+
+@app.route("/universe")
+def universe():
+    return render_template("universe.html")
+
+
+@app.route("/api/universe")
+def api_universe():
+    return jsonify(load_csv(UNIVERSE_DATA_PATH))
+
+
+@app.route("/grype")
+def grype():
+    return render_template("grype.html")
+
+
+@app.route("/api/grype")
+def api_grype():
+    return jsonify(load_csv(GRYPE_DATA_PATH))
+
+
+@app.route("/readme")
+def readme():
+    with open(README_PATH, encoding="utf-8") as f:
+        content = f.read()
+    html = markdown.markdown(content, extensions=["tables", "fenced_code", "toc"])
+    return render_template("readme.html", readme_html=Markup(html))
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

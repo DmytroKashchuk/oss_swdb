@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}Universe Installs Browser{% endblock %}
+
+{% block extra_head %}
+<style>
+	.stat-cards {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .75rem;
+		margin-bottom: 1.25rem;
+	}
+	.stat-card {
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		padding: .6rem 1.1rem;
+		min-width: 140px;
+		text-align: center;
+		flex: 1 1 140px;
+	}
+	.stat-card .stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #333;
+	}
+	.stat-card .stat-label {
+		font-size: .75rem;
+		color: #888;
+		text-transform: uppercase;
+		letter-spacing: .3px;
+	}
+	.stat-card.products .stat-value { color: #333; }
+	.stat-card.vendors .stat-value { color: #fd7e14; }
+	.stat-card.categories .stat-value { color: #6f42c1; }
+	.stat-card.series .stat-value { color: #0d6efd; }
+	.stat-card.sites .stat-value { color: #198754; }
+	.stat-card.enterprises .stat-value { color: #dc3545; }
+	.stats-bar {
+		font-size: .82rem;
+		color: #666;
+		margin-bottom: .5rem;
+	}
+	#universe-table {
+		font-size: .82rem;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<h4 class="mb-3">SWDB Universe Installs Browser</h4>
+
+	<!-- Stat Cards -->
+	<div class="stat-cards" id="statCards">
+		<div class="stat-card products">
+			<div class="stat-value" id="statTotal">-</div>
+			<div class="stat-label">Records</div>
+		</div>
+		<div class="stat-card vendors">
+			<div class="stat-value" id="statVendors">-</div>
+			<div class="stat-label">Vendors</div>
+		</div>
+		<div class="stat-card categories">
+			<div class="stat-value" id="statCategories">-</div>
+			<div class="stat-label">Categories</div>
+		</div>
+		<div class="stat-card series">
+			<div class="stat-value" id="statSeries">-</div>
+			<div class="stat-label">Series</div>
+		</div>
+		<div class="stat-card sites">
+			<div class="stat-value" id="statSites">-</div>
+			<div class="stat-label">Total Sites</div>
+		</div>
+		<div class="stat-card enterprises">
+			<div class="stat-value" id="statEnterprises">-</div>
+			<div class="stat-label">Total Enterprises</div>
+		</div>
+	</div>
+
+	<div class="stats-bar">
+		Showing <strong id="rowCount">0</strong> of <strong id="totalCount">0</strong> records
+	</div>
+
+	<div id="universe-table"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	var allData = [];
+
+	function parseNum(v) {
+		if (!v) return 0;
+		return parseInt(String(v).replace(/,/g, ""), 10) || 0;
+	}
+
+	function numFormatter(cell) {
+		var v = parseNum(cell.getValue());
+		return v ? v.toLocaleString() : "";
+	}
+
+	function numSorter(a, b) {
+		return parseNum(a) - parseNum(b);
+	}
+
+	function numFilterFunc(hv, rv) {
+		return parseNum(rv) >= parseNum(hv);
+	}
+
+	var table = new Tabulator("#universe-table", {
+		height: "65vh",
+		layout: "fitDataFill",
+		placeholder: "Loading data…",
+		pagination: true,
+		paginationSize: 50,
+		paginationSizeSelector: [25, 50, 100, 250, 500],
+		movableColumns: true,
+		headerSortTriState: true,
+		initialSort: [{ column: "Total Sites", dir: "desc" }],
+		columns: [
+			{
+				title: "Vendor",
+				field: "VendorName",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 170,
+			},
+			{
+				title: "Product",
+				field: "Product",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 210,
+			},
+			{
+				title: "Series",
+				field: "ProductSeries",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 190,
+			},
+			{
+				title: "Category",
+				field: "ProductCategory",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 210,
+			},
+			{
+				title: "Total Sites",
+				field: "Total Sites",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numFilterFunc,
+				width: 120,
+			},
+			{
+				title: "US Sites",
+				field: "US Sites",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numFilterFunc,
+				width: 110,
+			},
+			{
+				title: "Total Enterprises",
+				field: "Total Enterprises",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numFilterFunc,
+				width: 140,
+			},
+			{
+				title: "Enterprises in US",
+				field: "Enterprises in US",
+				sorter: numSorter,
+				formatter: numFormatter,
+				hozAlign: "right",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: numFilterFunc,
+				width: 140,
+			},
+		],
+	});
+
+	function refreshStats() {
+		var rows = table.getRows("active");
+		var items = rows.map(function (r) { return r.getData(); });
+
+		document.getElementById("rowCount").textContent = items.length;
+		document.getElementById("totalCount").textContent = allData.length;
+
+		var vendors = new Set();
+		var categories = new Set();
+		var series = new Set();
+		var totalSites = 0;
+		var totalEnterprises = 0;
+
+		items.forEach(function (r) {
+			if (r.VendorName) vendors.add(r.VendorName);
+			if (r.ProductCategory) categories.add(r.ProductCategory);
+			if (r.ProductSeries) series.add(r.ProductSeries);
+			totalSites += parseNum(r["Total Sites"]);
+			totalEnterprises += parseNum(r["Total Enterprises"]);
+		});
+
+		document.getElementById("statTotal").textContent = items.length.toLocaleString();
+		document.getElementById("statVendors").textContent = vendors.size.toLocaleString();
+		document.getElementById("statCategories").textContent = categories.size.toLocaleString();
+		document.getElementById("statSeries").textContent = series.size.toLocaleString();
+		document.getElementById("statSites").textContent = totalSites.toLocaleString();
+		document.getElementById("statEnterprises").textContent = totalEnterprises.toLocaleString();
+	}
+
+	table.on("dataFiltered", function () { setTimeout(refreshStats, 0); });
+
+	fetch("{{ url_for('api_universe') }}")
+		.then(function (res) { return res.json(); })
+		.then(function (data) {
+			allData = data;
+			table.setData(data).then(function () { refreshStats(); });
+		})
+		.catch(function (err) {
+			document.getElementById("universe-table").innerHTML =
+				'<div class="alert alert-danger">Failed to load data: ' + err.message + '</div>';
+		});
+});
+</script>
+{% endblock %}
