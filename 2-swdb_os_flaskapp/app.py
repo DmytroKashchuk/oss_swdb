@@ -100,6 +100,6 @@ def readme():
     html = markdown.markdown(content, extensions=["tables", "fenced_code", "toc"])
     return render_template("readme.html", readme_html=Markup(html))
 
-
+# run on port 8899 to avoid conflicts with other services
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8899)
