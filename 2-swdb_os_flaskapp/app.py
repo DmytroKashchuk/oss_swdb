@@ -13,6 +13,9 @@ DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "open_source_classif
 MAIN_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "MAIN.csv")
 UNIVERSE_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "swdb_universe_installs.csv")
 GRYPE_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "MAIN_w_grype.csv")
+LIBRARIES_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "libraries.csv")
+LIBRARIES_VULNS_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "libraries_with_vulns.csv")
+VULNS_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "vulnerabilities.csv")
 
 
 def load_csv(path=None):
@@ -58,6 +61,36 @@ def grype():
 @app.route("/api/grype")
 def api_grype():
     return jsonify(load_csv(GRYPE_DATA_PATH))
+
+
+@app.route("/libraries")
+def libraries():
+    return render_template("libraries.html")
+
+
+@app.route("/api/libraries")
+def api_libraries():
+    return jsonify(load_csv(LIBRARIES_DATA_PATH))
+
+
+@app.route("/libraries-vulns")
+def libraries_vulns():
+    return render_template("libraries_vulns.html")
+
+
+@app.route("/api/libraries-vulns")
+def api_libraries_vulns():
+    return jsonify(load_csv(LIBRARIES_VULNS_DATA_PATH))
+
+
+@app.route("/vulnerabilities")
+def vulnerabilities():
+    return render_template("vulnerabilities.html")
+
+
+@app.route("/api/vulnerabilities")
+def api_vulnerabilities():
+    return jsonify(load_csv(VULNS_DATA_PATH))
 
 
 @app.route("/readme")

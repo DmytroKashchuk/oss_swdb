@@ -52,6 +52,15 @@
 						<a class="nav-link {% if request.endpoint == 'grype' %}active{% endif %}" href="{{ url_for('grype') }}">Grype</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link {% if request.endpoint == 'libraries' %}active{% endif %}" href="{{ url_for('libraries') }}">Libraries</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if request.endpoint == 'libraries_vulns' %}active{% endif %}" href="{{ url_for('libraries_vulns') }}">Libraries + Vulns</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link {% if request.endpoint == 'vulnerabilities' %}active{% endif %}" href="{{ url_for('vulnerabilities') }}">Vulnerabilities</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link {% if request.endpoint == 'readme' %}active{% endif %}" href="{{ url_for('readme') }}">README</a>
 					</li>
 				</ul>
