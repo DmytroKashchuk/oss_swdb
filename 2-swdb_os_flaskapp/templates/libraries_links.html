@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Libraries with Links{% endblock %}
+
+{% block extra_head %}
+<style>
+	.stat-cards {
+		display: flex;
+		flex-wrap: wrap;
+		gap: .75rem;
+		margin-bottom: 1.25rem;
+	}
+	.stat-card {
+		background: #fff;
+		border: 1px solid #e0e0e0;
+		border-radius: 6px;
+		padding: .6rem 1.1rem;
+		min-width: 140px;
+		text-align: center;
+		flex: 1 1 140px;
+	}
+	.stat-card .stat-value {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: #333;
+	}
+	.stat-card .stat-label {
+		font-size: .75rem;
+		color: #888;
+		text-transform: uppercase;
+		letter-spacing: .3px;
+	}
+	.stat-card.total .stat-value { color: #333; }
+	.stat-card.projects .stat-value { color: #0d6efd; }
+	.stat-card.unique-libs .stat-value { color: #6f42c1; }
+	.stat-card.languages .stat-value { color: #198754; }
+	.stat-card.pkg-types .stat-value { color: #fd7e14; }
+	.stat-card.with-link .stat-value { color: #0dcaf0; }
+	.badge-lang {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		background: #e9ecef;
+		color: #495057;
+	}
+	.badge-pkg {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 600;
+		background: #fff3cd;
+		color: #664d03;
+	}
+	.stats-bar {
+		font-size: .82rem;
+		color: #666;
+		margin-bottom: .5rem;
+	}
+	#libraries-links-table {
+		font-size: .82rem;
+	}
+	.purl-cell {
+		font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+		font-size: .74rem;
+		word-break: break-all;
+	}
+	.github-link {
+		font-size: .78rem;
+		word-break: break-all;
+	}
+	.github-link a {
+		color: #0d6efd;
+		text-decoration: none;
+	}
+	.github-link a:hover {
+		text-decoration: underline;
+	}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Libraries with Links</h4>
+		<a href="{{ url_for('download', dataset='libraries_links') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV</a>
+		<button id="btnDownloadFiltered" class="btn btn-sm btn-outline-primary" onclick="table.download('csv', 'libraries_links_filtered.csv')">⬇ Download Filtered</button>
+		<button class="btn btn-sm btn-outline-success" onclick="downloadRandom(table, 'libraries_links_random.csv')">⬇ Download Random</button>
+	</div>
+
+	<!-- Stat Cards -->
+	<div class="stat-cards" id="statCards">
+		<div class="stat-card total">
+			<div class="stat-value" id="statTotal">-</div>
+			<div class="stat-label">Total Libraries</div>
+		</div>
+		<div class="stat-card projects">
+			<div class="stat-value" id="statProjects">-</div>
+			<div class="stat-label">Projects</div>
+		</div>
+		<div class="stat-card unique-libs">
+			<div class="stat-value" id="statUniqueLibs">-</div>
+			<div class="stat-label">Unique Libraries</div>
+		</div>
+		<div class="stat-card languages">
+			<div class="stat-value" id="statLanguages">-</div>
+			<div class="stat-label">Languages</div>
+		</div>
+		<div class="stat-card pkg-types">
+			<div class="stat-value" id="statPkgTypes">-</div>
+			<div class="stat-label">Package Types</div>
+		</div>
+		<div class="stat-card with-link">
+			<div class="stat-value" id="statWithLink">-</div>
+			<div class="stat-label">With GitHub Link</div>
+		</div>
+	</div>
+
+	<div class="stats-bar">
+		Showing <strong id="rowCount">0</strong> of <strong id="totalCount">0</strong> records
+	</div>
+
+	<div id="libraries-links-table"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	var allData = [];
+
+	function langFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		return '<span class="badge-lang">' + v + '</span>';
+	}
+
+	function pkgFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		return '<span class="badge-pkg">' + v + '</span>';
+	}
+
+	function purlFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		return '<span class="purl-cell">' + v.replace(/&/g, "&amp;").replace(/</g, "&lt;") + '</span>';
+	}
+
+	function githubLinkFormatter(cell) {
+		var v = (cell.getValue() || "").trim();
+		if (!v) return "";
+		var safe = v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+		return '<span class="github-link"><a href="' + safe + '" target="_blank" rel="noopener noreferrer">' + safe + '</a></span>';
+	}
+
+	var table = window.table = new Tabulator("#libraries-links-table", {
+		height: "65vh",
+		layout: "fitDataFill",
+		placeholder: "Loading data…",
+		pagination: true,
+		paginationSize: 50,
+		paginationSizeSelector: [25, 50, 100, 250, 500],
+		movableColumns: true,
+		headerSortTriState: true,
+		initialSort: [{ column: "project", dir: "asc" }],
+		columns: [
+			{
+				title: "Project",
+				field: "project",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 180,
+			},
+			{
+				title: "Library Name",
+				field: "name",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 220,
+			},
+			{
+				title: "Version",
+				field: "version",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 130,
+			},
+			{
+				title: "Type",
+				field: "type",
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 100,
+			},
+			{
+				title: "Language",
+				field: "language",
+				formatter: langFormatter,
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 110,
+			},
+			{
+				title: "Package Type",
+				field: "pkg_type",
+				formatter: pkgFormatter,
+				headerFilter: "list",
+				headerFilterParams: { valuesLookup: true, clearable: true, sort: "asc" },
+				headerFilterPlaceholder: "All…",
+				width: 140,
+			},
+			{
+				title: "PURL",
+				field: "purl",
+				formatter: purlFormatter,
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 300,
+			},
+			{
+				title: "Path",
+				field: "path",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 280,
+			},
+			{
+				title: "GitHub URL",
+				field: "lib_github_url",
+				formatter: githubLinkFormatter,
+				headerFilter: "list",
+				headerFilterParams: {
+					values: { "": "All", "has_link": "Has Link", "no_link": "No Link" },
+					clearable: true,
+				},
+				headerFilterPlaceholder: "All…",
+				headerFilterFunc: function (headerValue, rowValue) {
+					if (!headerValue) return true;
+					var v = (rowValue || "").trim();
+					if (headerValue === "has_link") return v.length > 0;
+					if (headerValue === "no_link") return v.length === 0;
+					return true;
+				},
+				width: 320,
+			},
+		],
+	});
+
+	function refreshStats() {
+		var rows = table.getRows("active");
+		var items = rows.map(function (r) { return r.getData(); });
+
+		document.getElementById("rowCount").textContent = items.length.toLocaleString();
+		document.getElementById("totalCount").textContent = allData.length.toLocaleString();
+
+		var projects = new Set();
+		var uniqueLibs = new Set();
+		var languages = new Set();
+		var pkgTypes = new Set();
+		var withLink = 0;
+
+		items.forEach(function (r) {
+			if (r.project) projects.add(r.project);
+			if (r.name) uniqueLibs.add(r.name);
+			var lang = (r.language || "").trim();
+			if (lang) languages.add(lang);
+			var pkg = (r.pkg_type || "").trim();
+			if (pkg) pkgTypes.add(pkg);
+			if ((r.lib_github_url || "").trim()) withLink++;
+		});
+
+		document.getElementById("statTotal").textContent = items.length.toLocaleString();
+		document.getElementById("statProjects").textContent = projects.size.toLocaleString();
+		document.getElementById("statUniqueLibs").textContent = uniqueLibs.size.toLocaleString();
+		document.getElementById("statLanguages").textContent = languages.size.toLocaleString();
+		document.getElementById("statPkgTypes").textContent = pkgTypes.size.toLocaleString();
+		document.getElementById("statWithLink").textContent = withLink.toLocaleString();
+	}
+
+	table.on("dataFiltered", function () { setTimeout(refreshStats, 0); });
+
+	fetch("{{ url_for('api_libraries_links') }}")
+		.then(function (res) { return res.json(); })
+		.then(function (data) {
+			allData = data;
+			table.setData(data).then(function () { refreshStats(); });
+		})
+		.catch(function (err) {
+			document.getElementById("libraries-links-table").innerHTML =
+				'<div class="alert alert-danger">Failed to load data: ' + err.message + '</div>';
+		});
+});
+</script>
+{% endblock %}

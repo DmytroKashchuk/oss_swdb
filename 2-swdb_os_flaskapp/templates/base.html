@@ -55,6 +55,9 @@
 						<a class="nav-link {% if request.endpoint == 'libraries' %}active{% endif %}" href="{{ url_for('libraries') }}">Libraries</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link {% if request.endpoint == 'libraries_links' %}active{% endif %}" href="{{ url_for('libraries_links') }}">Libraries + Links</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link {% if request.endpoint == 'libraries_vulns' %}active{% endif %}" href="{{ url_for('libraries_vulns') }}">Libraries + Vulns</a>
 					</li>
 					<li class="nav-item">
@@ -72,6 +75,39 @@
 		</div>
 
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+		<script>
+		function downloadRandom(tabulatorTable, filename) {
+			var rows = tabulatorTable.getRows("active").map(function(r){ return r.getData(); });
+			if (!rows.length) { alert("No data to download."); return; }
+			var n = prompt("How many random rows? (max " + rows.length + ")", Math.min(100, rows.length));
+			if (n === null) return;
+			n = parseInt(n, 10);
+			if (isNaN(n) || n < 1) { alert("Please enter a valid number."); return; }
+			if (n > rows.length) n = rows.length;
+			// Fisher-Yates shuffle, take first n
+			var shuffled = rows.slice();
+			for (var i = shuffled.length - 1; i > 0; i--) {
+				var j = Math.floor(Math.random() * (i + 1));
+				var tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
+			}
+			var sample = shuffled.slice(0, n);
+			var cols = Object.keys(sample[0]);
+			var csv = cols.join(",") + "\n";
+			sample.forEach(function(row) {
+				csv += cols.map(function(c) {
+					var v = (row[c] == null ? "" : String(row[c]));
+					return v.indexOf(",") !== -1 || v.indexOf('"') !== -1 || v.indexOf("\n") !== -1
+						? '"' + v.replace(/"/g, '""') + '"' : v;
+				}).join(",") + "\n";
+			});
+			var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+			var link = document.createElement("a");
+			link.href = URL.createObjectURL(blob);
+			link.download = filename;
+			link.click();
+			URL.revokeObjectURL(link.href);
+		}
+		</script>
 		{% block extra_scripts %}{% endblock %}
 	</body>
 </html>

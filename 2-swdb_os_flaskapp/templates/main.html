@@ -107,7 +107,12 @@
 
 {% block content %}
 <div class="container-fluid">
-	<h4 class="mb-3">Main Data Browser</h4>
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Main Data Browser</h4>
+		<a href="{{ url_for('download', dataset='main') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV</a>
+		<button id="btnDownloadFiltered" class="btn btn-sm btn-outline-primary" onclick="table.download('csv', 'main_filtered.csv')">⬇ Download Filtered</button>
+		<button class="btn btn-sm btn-outline-success" onclick="downloadRandom(table, 'main_random.csv')">⬇ Download Random</button>
+	</div>
 
 	<!-- Stat Cards -->
 	<div class="stat-cards" id="statCards">
@@ -239,7 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		return '<span class="sev-badge ' + cls + '">' + v + '</span>';
 	}
 
-	var table = new Tabulator("#main-table", {
+	var table = window.table = new Tabulator("#main-table", {
 		height: "65vh",
 		layout: "fitDataFill",
 		placeholder: "Loading data…",

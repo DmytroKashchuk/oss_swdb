@@ -104,7 +104,12 @@
 
 {% block content %}
 <div class="container-fluid">
-	<h4 class="mb-3">Libraries + Vulnerabilities Browser</h4>
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Libraries + Vulnerabilities Browser</h4>
+		<a href="{{ url_for('download', dataset='libraries_vulns') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV</a>
+		<button id="btnDownloadFiltered" class="btn btn-sm btn-outline-primary" onclick="table.download('csv', 'libraries_vulns_filtered.csv')">⬇ Download Filtered</button>
+		<button class="btn btn-sm btn-outline-success" onclick="downloadRandom(table, 'libraries_vulns_random.csv')">⬇ Download Random</button>
+	</div>
 
 	<!-- Stat Cards -->
 	<div class="stat-cards" id="statCards">
@@ -220,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		return parseNum(a) - parseNum(b);
 	}
 
-	var table = new Tabulator("#vulns-table", {
+	var table = window.table = new Tabulator("#vulns-table", {
 		height: "65vh",
 		layout: "fitDataFill",
 		placeholder: "Loading data…",

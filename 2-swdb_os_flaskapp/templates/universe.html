@@ -49,7 +49,12 @@
 
 {% block content %}
 <div class="container-fluid">
-	<h4 class="mb-3">SWDB Universe Installs Browser</h4>
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">SWDB Universe Installs Browser</h4>
+		<a href="{{ url_for('download', dataset='universe') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV</a>
+		<button id="btnDownloadFiltered" class="btn btn-sm btn-outline-primary" onclick="table.download('csv', 'universe_filtered.csv')">⬇ Download Filtered</button>
+		<button class="btn btn-sm btn-outline-success" onclick="downloadRandom(table, 'universe_random.csv')">⬇ Download Random</button>
+	</div>
 
 	<!-- Stat Cards -->
 	<div class="stat-cards" id="statCards">
@@ -111,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		return parseNum(rv) >= parseNum(hv);
 	}
 
-	var table = new Tabulator("#universe-table", {
+	var table = window.table = new Tabulator("#universe-table", {
 		height: "65vh",
 		layout: "fitDataFill",
 		placeholder: "Loading data…",

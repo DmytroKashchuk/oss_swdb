@@ -2,7 +2,7 @@ import csv
 import os
 
 import markdown
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_file, abort
 from markupsafe import Markup
 
 app = Flask(__name__)
@@ -16,6 +16,26 @@ GRYPE_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "MAIN_w_grype.
 LIBRARIES_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "libraries.csv")
 LIBRARIES_VULNS_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "libraries_with_vulns.csv")
 VULNS_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "vulnerabilities.csv")
+LIBRARIES_LINKS_DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "libraries_with_links.csv")
+
+DOWNLOAD_MAP = {
+    "open_source": DATA_PATH,
+    "main": MAIN_DATA_PATH,
+    "universe": UNIVERSE_DATA_PATH,
+    "grype": GRYPE_DATA_PATH,
+    "libraries": LIBRARIES_DATA_PATH,
+    "libraries_vulns": LIBRARIES_VULNS_DATA_PATH,
+    "vulnerabilities": VULNS_DATA_PATH,
+    "libraries_links": LIBRARIES_LINKS_DATA_PATH,
+}
+
+
+@app.route("/download/<dataset>")
+def download(dataset):
+    path = DOWNLOAD_MAP.get(dataset)
+    if not path or not os.path.isfile(path):
+        abort(404)
+    return send_file(path, as_attachment=True)
 
 
 def load_csv(path=None):
@@ -91,6 +111,20 @@ def vulnerabilities():
 @app.route("/api/vulnerabilities")
 def api_vulnerabilities():
     return jsonify(load_csv(VULNS_DATA_PATH))
+
+
+@app.route("/libraries-links")
+def libraries_links():
+    return render_template("libraries_links.html")
+
+@app.route("/edr")
+def edr():
+    return render_template("edr.html")
+
+
+@app.route("/api/libraries-links")
+def api_libraries_links():
+    return jsonify(load_csv(LIBRARIES_LINKS_DATA_PATH))
 
 
 @app.route("/readme")

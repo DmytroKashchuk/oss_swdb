@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply Chain Security — ERD</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fafaf8;--surface:#fff;--border:#e4e2db;--text:#1a1a18;--muted:#6b6a65;--dim:#9c9a92;--teal:#0f6e56;--teal-bg:#e1f5ee;--purple:#534ab7;--purple-bg:#eeedfe;--coral:#993c1d;--coral-bg:#faece7;--blue:#185fa5;--blue-bg:#e6f1fb;--amber:#854f0b;--amber-bg:#faeeda;--green:#3b6d11;--green-bg:#eaf3de}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:1.5rem 1rem 4rem}
+.wrap{max-width:100%;margin:0 auto}
+header{margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:1rem;max-width:1400px;margin-left:auto;margin-right:auto}
+header h1{font-size:24px;font-weight:600;letter-spacing:-.5px}
+header p{color:var(--muted);font-size:13px;margin-top:6px}
+.erd-legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 auto 16px;font-size:12px;color:var(--muted);padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;max-width:1400px}
+.erd-legend span{display:flex;align-items:center;gap:6px}
+.erd-legend .ld{width:22px;height:2.5px;border-radius:1px}
+
+.erd-wrap{overflow:hidden;border:1px solid var(--border);border-radius:8px;background:#f4f3ee;background-image:radial-gradient(circle,#dcdbd4 1px,transparent 1px);background-size:20px 20px;height:80vh;min-height:600px;cursor:grab;position:relative}
+.erd-wrap.panning{cursor:grabbing}
+.erd-wrap.panning *{cursor:grabbing!important}
+.erd{position:absolute;width:2400px;height:1700px;top:0;left:0;will-change:transform}
+
+.eb{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.eb.fut{border-style:dashed;border-color:var(--dim);background:#fdfcf9}
+.eh{padding:8px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:grab;user-select:none}
+.eh:active{cursor:grabbing}
+.eb.dragging{z-index:10;box-shadow:0 8px 24px rgba(0,0,0,.15)}
+.eh .n{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.eh .s{font-size:10px;font-weight:500;color:var(--muted);margin-left:auto}
+
+.tbl{font-size:11px;border-top:1px solid var(--border)}
+.tbl table{border-collapse:collapse;width:100%;font-family:'JetBrains Mono',monospace}
+.tbl thead th{text-align:left;padding:5px 8px;font-size:9.5px;color:var(--muted);font-weight:600;background:#f6f5f0;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.tbl tbody td{padding:4px 8px;border-bottom:1px solid #f1efe8;white-space:nowrap;font-size:10.5px}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:nth-child(even) td{background:#fafaf6}
+.pk-col{background:var(--teal-bg)!important;color:var(--teal);font-weight:600}
+.fk-col{background:var(--blue-bg)!important;color:var(--blue);font-weight:600}
+td.num{text-align:right;color:var(--purple)}
+td.bt{color:var(--green)}
+td.bf{color:#a32d2d}
+td.url{color:var(--blue);max-width:180px;overflow:hidden;text-overflow:ellipsis}
+
+svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+
+.hint{font-size:12px;color:var(--muted);margin:0 auto 10px;max-width:1400px;display:flex;align-items:center;gap:6px}
+.hint svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Supply chain security — ERD with example rows</h1>
+<p>7 tables. Drag any box by its header. Joins shown by colored keys (PK=teal, FK=blue).</p>
+</header>
+<div class="erd-legend">
+<span><span class="ld" style="background:#0F6E56"></span> Product + VendorName</span>
+<span><span class="ld" style="background:#534AB7"></span> project</span>
+<span><span class="ld" style="background:#185FA5"></span> name + version</span>
+<span><span class="ld" style="background:#993c1d"></span> lib_github_url</span>
+<span><span class="ld" style="background:#9c9a92;height:0;border-top:2px dashed #9c9a92"></span> superset / aggregation</span>
+</div>
+<div class="hint"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg> Click & drag the empty canvas to pan. Drag a box by its header to move it.</div>
+
+<div class="erd-wrap">
+<div class="erd" id="erd">
+
+<!-- 1: open_source.csv -->
+<div class="eb" id="e1" style="left:40px;top:40px">
+<div class="eh" style="background:var(--teal-bg)"><span class="n" style="background:var(--teal)">1</span> open_source.csv <span class="s">10K rows</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">GitHubLink</th><th>IsOS</th><th>Category</th></tr></thead>
+<tbody>
+<tr><td class="pk-col">WordPress</td><td class="pk-col">Automattic</td><td class="url fk-col">github.com/WordPress/WordPress</td><td class="bt">Yes</td><td>CMS</td></tr>
+<tr><td class="pk-col">Grafana</td><td class="pk-col">Grafana Labs</td><td class="url fk-col">github.com/grafana/grafana</td><td class="bt">Yes</td><td>Analytics</td></tr>
+<tr><td class="pk-col">Elasticsearch</td><td class="pk-col">Elastic</td><td class="url fk-col">github.com/elastic/elasticsearch</td><td class="bt">Yes</td><td>Search</td></tr>
+<tr><td class="pk-col">Salesforce</td><td class="pk-col">Salesforce</td><td class="url fk-col"></td><td class="bf">No</td><td>CRM</td></tr>
+<tr><td class="pk-col">Redis</td><td class="pk-col">Redis Ltd</td><td class="url fk-col">github.com/redis/redis</td><td class="bt">Yes</td><td>Databases</td></tr>
+<tr><td class="pk-col">Jenkins</td><td class="pk-col">Jenkins</td><td class="url fk-col">github.com/jenkinsci/jenkins</td><td class="bt">Yes</td><td>CI/CD</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 2: main.csv -->
+<div class="eb" id="e2" style="left:560px;top:40px">
+<div class="eh" style="background:var(--purple-bg)"><span class="n" style="background:var(--purple)">2</span> main.csv <span class="s">30 cols</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">project</th><th>Total Ent.</th><th>gh_stars</th><th>gh_lang</th><th>components</th><th>vulns</th><th>critical</th><th>high</th></tr></thead>
+<tbody>
+<tr><td class="pk-col">WordPress</td><td class="pk-col">Automattic</td><td class="fk-col">Automattic-WordPress.cdx</td><td class="num">483,210</td><td class="num">19,842</td><td>PHP</td><td class="num">347</td><td class="num">18</td><td class="num">2</td><td class="num">5</td></tr>
+<tr><td class="pk-col">Grafana</td><td class="pk-col">Grafana Labs</td><td class="fk-col">Grafana_Labs-Grafana.cdx</td><td class="num">52,100</td><td class="num">66,200</td><td>TS</td><td class="num">1,204</td><td class="num">42</td><td class="num">0</td><td class="num">8</td></tr>
+<tr><td class="pk-col">Elasticsearch</td><td class="pk-col">Elastic</td><td class="fk-col">Elastic-Elasticsearch.cdx</td><td class="num">98,450</td><td class="num">71,500</td><td>Java</td><td class="num">892</td><td class="num">31</td><td class="num">1</td><td class="num">12</td></tr>
+<tr><td class="pk-col">Redis</td><td class="pk-col">Redis Ltd</td><td class="fk-col">Redis_Ltd-Redis.cdx</td><td class="num">210,800</td><td class="num">67,900</td><td>C</td><td class="num">28</td><td class="num">3</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td class="pk-col">GitLab</td><td class="pk-col">GitLab</td><td class="fk-col">GitLab-GitLab.cdx</td><td class="num">38,900</td><td class="num">24,100</td><td>Ruby</td><td class="num">2,810</td><td class="num">89</td><td class="num">4</td><td class="num">22</td></tr>
+<tr><td class="pk-col">Jenkins</td><td class="pk-col">Jenkins</td><td class="fk-col">Jenkins-Jenkins.cdx</td><td class="num">71,200</td><td class="num">23,400</td><td>Java</td><td class="num">1,560</td><td class="num">64</td><td class="num">3</td><td class="num">18</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 3: grype.csv -->
+<div class="eb" id="e3" style="left:560px;top:430px">
+<div class="eh" style="background:var(--coral-bg)"><span class="n" style="background:var(--coral)">3</span> grype.csv <span class="s">49 cols</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">project</th><th>total_libs</th><th>uniq_libs</th><th>vulns</th><th>avg_cvss</th><th>max_cvss</th><th>%fix</th><th>%vuln</th><th>syft_lang</th></tr></thead>
+<tbody>
+<tr><td class="pk-col">WordPress</td><td class="pk-col">Automattic</td><td class="fk-col">Automattic-WordPress</td><td class="num">347</td><td class="num">298</td><td class="num">18</td><td class="num">6.8</td><td class="num">9.1</td><td class="num">78%</td><td class="num">3.2%</td><td>php; js</td></tr>
+<tr><td class="pk-col">Grafana</td><td class="pk-col">Grafana Labs</td><td class="fk-col">Grafana_Labs-Grafana</td><td class="num">1,204</td><td class="num">987</td><td class="num">42</td><td class="num">5.9</td><td class="num">8.4</td><td class="num">62%</td><td class="num">2.7%</td><td>go; ts</td></tr>
+<tr><td class="pk-col">Elasticsearch</td><td class="pk-col">Elastic</td><td class="fk-col">Elastic-Elasticsearch</td><td class="num">892</td><td class="num">714</td><td class="num">31</td><td class="num">7.1</td><td class="num">9.8</td><td class="num">84%</td><td class="num">3.6%</td><td>java</td></tr>
+<tr><td class="pk-col">Redis</td><td class="pk-col">Redis Ltd</td><td class="fk-col">Redis_Ltd-Redis</td><td class="num">28</td><td class="num">24</td><td class="num">3</td><td class="num">5.4</td><td class="num">7.5</td><td class="num">100%</td><td class="num">4.2%</td><td>c</td></tr>
+<tr><td class="pk-col">GitLab</td><td class="pk-col">GitLab</td><td class="fk-col">GitLab-GitLab</td><td class="num">2,810</td><td class="num">2,140</td><td class="num">89</td><td class="num">6.5</td><td class="num">9.6</td><td class="num">71%</td><td class="num">4.1%</td><td>ruby; js</td></tr>
+<tr><td class="pk-col">Jenkins</td><td class="pk-col">Jenkins</td><td class="fk-col">Jenkins-Jenkins</td><td class="num">1,560</td><td class="num">1,180</td><td class="num">64</td><td class="num">7.4</td><td class="num">9.9</td><td class="num">55%</td><td class="num">5.8%</td><td>java</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 4: libraries_vulns.csv -->
+<div class="eb" id="e4" style="left:40px;top:830px">
+<div class="eh" style="background:var(--coral-bg)"><span class="n" style="background:var(--coral)">4</span> libraries_vulns.csv <span class="s">209K rows</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="fk-col">project</th><th class="pk-col">name</th><th class="pk-col">version</th><th>language</th><th>pkg_type</th><th>vuln_count</th><th>vulnerable</th></tr></thead>
+<tbody>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">jackson-databind</td><td class="pk-col">2.15.3</td><td>java</td><td>maven</td><td class="num">4</td><td class="bt">True</td></tr>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">netty-handler</td><td class="pk-col">4.1.100</td><td>java</td><td>maven</td><td class="num">1</td><td class="bt">True</td></tr>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">guava</td><td class="pk-col">32.1.3</td><td>java</td><td>maven</td><td class="num">0</td><td class="bf">False</td></tr>
+<tr><td class="fk-col">Grafana_Labs-Grafana</td><td class="pk-col">golang.org/x/net</td><td class="pk-col">v0.23.0</td><td>go</td><td>go-mod</td><td class="num">2</td><td class="bt">True</td></tr>
+<tr><td class="fk-col">Grafana_Labs-Grafana</td><td class="pk-col">react</td><td class="pk-col">18.2.0</td><td>js</td><td>npm</td><td class="num">0</td><td class="bf">False</td></tr>
+<tr><td class="fk-col">GitLab-GitLab</td><td class="pk-col">nokogiri</td><td class="pk-col">1.16.2</td><td>ruby</td><td>gem</td><td class="num">3</td><td class="bt">True</td></tr>
+<tr><td class="fk-col">Automattic-WordPress</td><td class="pk-col">phpmailer</td><td class="pk-col">6.9.1</td><td>php</td><td>composer</td><td class="num">0</td><td class="bf">False</td></tr>
+<tr><td class="fk-col">Jenkins-Jenkins</td><td class="pk-col">commons-text</td><td class="pk-col">1.10.0</td><td>java</td><td>maven</td><td class="num">1</td><td class="bt">True</td></tr>
+<tr><td class="fk-col">Jenkins-Jenkins</td><td class="pk-col">spring-core</td><td class="pk-col">5.3.31</td><td>java</td><td>maven</td><td class="num">2</td><td class="bt">True</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 5: libraries_links.csv -->
+<div class="eb" id="e5" style="left:1180px;top:830px">
+<div class="eh" style="background:var(--blue-bg)"><span class="n" style="background:var(--blue)">5</span> libraries_links.csv <span class="s">37K rows</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="fk-col">project</th><th class="pk-col">name</th><th class="pk-col">version</th><th class="fk-col">lib_github_url</th><th>language</th><th>pkg_type</th></tr></thead>
+<tbody>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">jackson-databind</td><td class="pk-col">2.15.3</td><td class="url fk-col">github.com/FasterXML/jackson-databind</td><td>java</td><td>maven</td></tr>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">netty-handler</td><td class="pk-col">4.1.100</td><td class="url fk-col">github.com/netty/netty</td><td>java</td><td>maven</td></tr>
+<tr><td class="fk-col">Elastic-Elasticsearch</td><td class="pk-col">guava</td><td class="pk-col">32.1.3</td><td class="url fk-col">github.com/google/guava</td><td>java</td><td>maven</td></tr>
+<tr><td class="fk-col">Grafana_Labs-Grafana</td><td class="pk-col">golang.org/x/net</td><td class="pk-col">v0.23.0</td><td class="url fk-col">github.com/golang/net</td><td>go</td><td>go-mod</td></tr>
+<tr><td class="fk-col">GitLab-GitLab</td><td class="pk-col">nokogiri</td><td class="pk-col">1.16.2</td><td class="url fk-col">github.com/sparklemotion/nokogiri</td><td>ruby</td><td>gem</td></tr>
+<tr><td class="fk-col">Automattic-WordPress</td><td class="pk-col">phpmailer</td><td class="pk-col">6.9.1</td><td class="url fk-col">github.com/PHPMailer/PHPMailer</td><td>php</td><td>composer</td></tr>
+<tr><td class="fk-col">Jenkins-Jenkins</td><td class="pk-col">commons-text</td><td class="pk-col">1.10.0</td><td class="url fk-col">github.com/apache/commons-text</td><td>java</td><td>maven</td></tr>
+<tr><td class="fk-col">Jenkins-Jenkins</td><td class="pk-col">spring-core</td><td class="pk-col">5.3.31</td><td class="url fk-col">github.com/spring-projects/spring-framework</td><td>java</td><td>maven</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 6: lib_github_meta (future) -->
+<div class="eb fut" id="e6" style="left:1180px;top:1310px">
+<div class="eh" style="background:var(--blue-bg)"><span class="n" style="background:var(--blue)">6</span> lib_github_meta <span class="s">future · 37K</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="pk-col">lib_github_url</th><th>stars</th><th>forks</th><th>issues</th><th>archived</th><th>last_push</th><th>license</th><th>days_stale</th></tr></thead>
+<tbody>
+<tr><td class="url pk-col">github.com/FasterXML/jackson-databind</td><td class="num">3,620</td><td class="num">1,380</td><td class="num">94</td><td class="bf">False</td><td>2026-03-28</td><td>Apache-2.0</td><td class="num">12</td></tr>
+<tr><td class="url pk-col">github.com/netty/netty</td><td class="num">33,800</td><td class="num">15,900</td><td class="num">612</td><td class="bf">False</td><td>2026-04-01</td><td>Apache-2.0</td><td class="num">8</td></tr>
+<tr><td class="url pk-col">github.com/google/guava</td><td class="num">50,400</td><td class="num">10,800</td><td class="num">780</td><td class="bf">False</td><td>2026-04-02</td><td>Apache-2.0</td><td class="num">7</td></tr>
+<tr><td class="url pk-col">github.com/golang/net</td><td class="num">2,900</td><td class="num">1,100</td><td class="num">4</td><td class="bf">False</td><td>2026-03-15</td><td>BSD-3</td><td class="num">25</td></tr>
+<tr><td class="url pk-col">github.com/sparklemotion/nokogiri</td><td class="num">6,200</td><td class="num">890</td><td class="num">42</td><td class="bf">False</td><td>2026-03-20</td><td>MIT</td><td class="num">20</td></tr>
+<tr><td class="url pk-col">github.com/old-abandoned/lib</td><td class="num">12</td><td class="num">3</td><td class="num">18</td><td class="bt">True</td><td>2022-08-01</td><td>—</td><td class="num">1,347</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<!-- 7: analysis_master (future) -->
+<div class="eb fut" id="e7" style="left:40px;top:1310px">
+<div class="eh" style="background:var(--green-bg)"><span class="n" style="background:var(--green)">7</span> analysis_master <span class="s">future</span></div>
+<div class="tbl"><table>
+<thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th>Category</th><th>total_libs</th><th>%vuln</th><th>avg_lib_stars</th><th>%archived</th><th>days_stale</th><th>vulns</th><th>avg_cvss</th><th>%fix</th></tr></thead>
+<tbody>
+<tr><td class="pk-col">WordPress</td><td class="pk-col">Automattic</td><td>CMS</td><td class="num">347</td><td class="num">3.2%</td><td class="num">4,210</td><td class="num">1.4%</td><td class="num">38</td><td class="num">18</td><td class="num">6.8</td><td class="num">78%</td></tr>
+<tr><td class="pk-col">Grafana</td><td class="pk-col">Grafana Labs</td><td>Analytics</td><td class="num">1,204</td><td class="num">2.7%</td><td class="num">2,890</td><td class="num">3.1%</td><td class="num">52</td><td class="num">42</td><td class="num">5.9</td><td class="num">62%</td></tr>
+<tr><td class="pk-col">Elasticsearch</td><td class="pk-col">Elastic</td><td>Search</td><td class="num">892</td><td class="num">3.6%</td><td class="num">8,450</td><td class="num">0.8%</td><td class="num">21</td><td class="num">31</td><td class="num">7.1</td><td class="num">84%</td></tr>
+<tr><td class="pk-col">Redis</td><td class="pk-col">Redis Ltd</td><td>Databases</td><td class="num">28</td><td class="num">4.2%</td><td class="num">12,300</td><td class="num">0%</td><td class="num">14</td><td class="num">3</td><td class="num">5.4</td><td class="num">100%</td></tr>
+<tr><td class="pk-col">GitLab</td><td class="pk-col">GitLab</td><td>DevOps</td><td class="num">2,810</td><td class="num">4.1%</td><td class="num">3,100</td><td class="num">2.8%</td><td class="num">67</td><td class="num">89</td><td class="num">6.5</td><td class="num">71%</td></tr>
+<tr><td class="pk-col">Jenkins</td><td class="pk-col">Jenkins</td><td>CI/CD</td><td class="num">1,560</td><td class="num">5.8%</td><td class="num">1,740</td><td class="num">7.2%</td><td class="num">189</td><td class="num">64</td><td class="num">7.4</td><td class="num">55%</td></tr>
+</tbody>
+</table></div>
+</div>
+
+<svg class="lk" id="svg-erd"></svg>
+</div>
+</div>
+</div>
+
+<script>
+// Get rectangle of a box relative to ERD canvas
+function rect(boxId) {
+  var box = document.getElementById(boxId);
+  var erd = document.getElementById('erd');
+  var cR = erd.getBoundingClientRect();
+  var bR = box.getBoundingClientRect();
+  return {
+    left: bR.left - cR.left,
+    right: bR.right - cR.left,
+    top: bR.top - cR.top,
+    bottom: bR.bottom - cR.top,
+    cx: (bR.left + bR.right) / 2 - cR.left,
+    cy: (bR.top + bR.bottom) / 2 - cR.top,
+    w: bR.width,
+    h: bR.height
+  };
+}
+
+// Pick the closest pair of edge midpoints between two boxes (auto-routing).
+function bestSides(a, b) {
+  var sides = [
+    { name:'r', x:a.right,  y:a.cy },
+    { name:'l', x:a.left,   y:a.cy },
+    { name:'b', x:a.cx,     y:a.bottom },
+    { name:'t', x:a.cx,     y:a.top }
+  ];
+  var sidesB = [
+    { name:'r', x:b.right,  y:b.cy },
+    { name:'l', x:b.left,   y:b.cy },
+    { name:'b', x:b.cx,     y:b.bottom },
+    { name:'t', x:b.cx,     y:b.top }
+  ];
+  var best = null, bd = Infinity;
+  for (var i=0;i<sides.length;i++) for (var j=0;j<sidesB.length;j++) {
+    var dx = sides[i].x - sidesB[j].x, dy = sides[i].y - sidesB[j].y;
+    var d = dx*dx + dy*dy;
+    if (d < bd) { bd = d; best = { a:sides[i], b:sidesB[j] }; }
+  }
+  return best;
+}
+
+// Build orthogonal path from anchor a (with side) to anchor b (with side).
+function orthPath(a, b) {
+  var horizA = (a.name === 'l' || a.name === 'r');
+  var horizB = (b.name === 'l' || b.name === 'r');
+  // Stub-out distance from each box edge
+  var stub = 24;
+  var ax2 = a.x + (a.name==='r'?stub:a.name==='l'?-stub:0);
+  var ay2 = a.y + (a.name==='b'?stub:a.name==='t'?-stub:0);
+  var bx2 = b.x + (b.name==='r'?stub:b.name==='l'?-stub:0);
+  var by2 = b.y + (b.name==='b'?stub:b.name==='t'?-stub:0);
+
+  var p = 'M' + a.x + ',' + a.y + ' L' + ax2 + ',' + ay2 + ' ';
+  if (horizA && horizB) {
+    var mx = (ax2 + bx2) / 2;
+    p += 'L' + mx + ',' + ay2 + ' L' + mx + ',' + by2 + ' ';
+  } else if (!horizA && !horizB) {
+    var my = (ay2 + by2) / 2;
+    p += 'L' + ax2 + ',' + my + ' L' + bx2 + ',' + my + ' ';
+  } else if (horizA && !horizB) {
+    p += 'L' + bx2 + ',' + ay2 + ' ';
+  } else {
+    p += 'L' + ax2 + ',' + by2 + ' ';
+  }
+  p += 'L' + bx2 + ',' + by2 + ' L' + b.x + ',' + b.y;
+  return p;
+}
+
+function drawERD() {
+  var svg = document.getElementById('svg-erd');
+  var erd = document.getElementById('erd');
+  var w = erd.offsetWidth, h = erd.offsetHeight;
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+
+  var edges = [
+    { f:'e1', t:'e2', c:'#0F6E56', lb:'Product + VendorName' },
+    { f:'e2', t:'e3', c:'#9c9a92', lb:'superset (extends)', dashed:true },
+    { f:'e3', t:'e4', c:'#534AB7', lb:'project' },
+    { f:'e3', t:'e5', c:'#534AB7', lb:'project' },
+    { f:'e4', t:'e5', c:'#185FA5', lb:'name + version' },
+    { f:'e5', t:'e6', c:'#993c1d', lb:'lib_github_url' },
+    { f:'e4', t:'e7', c:'#9c9a92', lb:'agg via project', dashed:true },
+    { f:'e6', t:'e7', c:'#9c9a92', lb:'agg via lib_github_url', dashed:true }
+  ];
+
+  var out = '<defs>' +
+    '<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+    '<path d="M1 1 L9 5 L1 9 z" fill="context-stroke"/></marker></defs>';
+
+  edges.forEach(function(e) {
+    var ra = rect(e.f), rb = rect(e.t);
+    var pair = bestSides(ra, rb);
+    var d = orthPath(pair.a, pair.b);
+    var dash = e.dashed ? ' stroke-dasharray="6,5"' : '';
+    out += '<path d="' + d + '" stroke="' + e.c + '" stroke-width="2" fill="none" marker-end="url(#ar)" opacity="0.8"' + dash + '/>';
+
+    // Label at midpoint of bounding box of the two anchors
+    var lx = (pair.a.x + pair.b.x) / 2;
+    var ly = (pair.a.y + pair.b.y) / 2 - 6;
+    out += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="500" fill="' + e.c + '" paint-order="stroke" stroke="#f4f3ee" stroke-width="4" stroke-linejoin="round">' + e.lb + '</text>';
+  });
+
+  svg.innerHTML = out;
+}
+
+function initDrag() {
+  var erd = document.getElementById('erd');
+  var boxes = erd.querySelectorAll('.eb');
+  var dragging = null;
+  var offX = 0, offY = 0;
+
+  boxes.forEach(function(box) {
+    var head = box.querySelector('.eh');
+    head.addEventListener('mousedown', function(e) {
+      dragging = box;
+      box.classList.add('dragging');
+      var bR = box.getBoundingClientRect();
+      offX = e.clientX - bR.left;
+      offY = e.clientY - bR.top;
+      e.preventDefault();
+    });
+    head.addEventListener('touchstart', function(e) {
+      var t = e.touches[0];
+      dragging = box;
+      box.classList.add('dragging');
+      var bR = box.getBoundingClientRect();
+      offX = t.clientX - bR.left;
+      offY = t.clientY - bR.top;
+      e.preventDefault();
+    }, {passive:false});
+  });
+
+  function move(clientX, clientY) {
+    if (!dragging) return;
+    var cR = erd.getBoundingClientRect();
+    var x = clientX - cR.left - offX;
+    var y = clientY - cR.top - offY;
+    x = Math.max(0, Math.min(x, erd.offsetWidth - dragging.offsetWidth));
+    y = Math.max(0, Math.min(y, erd.offsetHeight - dragging.offsetHeight));
+    dragging.style.left = x + 'px';
+    dragging.style.top = y + 'px';
+    drawERD();
+  }
+
+  document.addEventListener('mousemove', function(e) { move(e.clientX, e.clientY); });
+  document.addEventListener('touchmove', function(e) {
+    if (!dragging) return;
+    var t = e.touches[0];
+    move(t.clientX, t.clientY);
+    e.preventDefault();
+  }, {passive:false});
+
+  function stop() {
+    if (dragging) { dragging.classList.remove('dragging'); dragging = null; }
+  }
+  document.addEventListener('mouseup', stop);
+  document.addEventListener('touchend', stop);
+}
+
+function initPan() {
+  var wrap = document.querySelector('.erd-wrap');
+  var erd = document.getElementById('erd');
+  var tx = 0, ty = 0;
+  var panning = false;
+  var startX = 0, startY = 0, startTx = 0, startTy = 0;
+
+  function apply() { erd.style.transform = 'translate(' + tx + 'px,' + ty + 'px)'; }
+  apply();
+
+  wrap.addEventListener('mousedown', function(e) {
+    // Only pan if click target is NOT inside a box header (boxes still draggable)
+    if (e.target.closest('.eh')) return;
+    panning = true;
+    wrap.classList.add('panning');
+    startX = e.clientX; startY = e.clientY;
+    startTx = tx; startTy = ty;
+    e.preventDefault();
+  });
+  wrap.addEventListener('touchstart', function(e) {
+    if (e.target.closest('.eh')) return;
+    var t = e.touches[0];
+    panning = true;
+    wrap.classList.add('panning');
+    startX = t.clientX; startY = t.clientY;
+    startTx = tx; startTy = ty;
+  }, {passive:true});
+
+  document.addEventListener('mousemove', function(e) {
+    if (!panning) return;
+    tx = startTx + (e.clientX - startX);
+    ty = startTy + (e.clientY - startY);
+    apply();
+  });
+  document.addEventListener('touchmove', function(e) {
+    if (!panning) return;
+    var t = e.touches[0];
+    tx = startTx + (t.clientX - startX);
+    ty = startTy + (t.clientY - startY);
+    apply();
+  }, {passive:true});
+
+  function stop() { panning = false; wrap.classList.remove('panning'); }
+  document.addEventListener('mouseup', stop);
+  document.addEventListener('touchend', stop);
+}
+
+window.addEventListener('load', function() { drawERD(); initDrag(); initPan(); });
+window.addEventListener('resize', drawERD);
+</script>
+</body>
+</html>

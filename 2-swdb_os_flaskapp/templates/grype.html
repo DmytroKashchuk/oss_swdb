@@ -125,7 +125,12 @@
 
 {% block content %}
 <div class="container-fluid">
-	<h4 class="mb-3">Grype Analysis Browser</h4>
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Grype Analysis Browser</h4>
+		<a href="{{ url_for('download', dataset='grype') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV</a>
+		<button id="btnDownloadFiltered" class="btn btn-sm btn-outline-primary" onclick="table.download('csv', 'grype_filtered.csv')">⬇ Download Filtered</button>
+		<button class="btn btn-sm btn-outline-success" onclick="downloadRandom(table, 'grype_random.csv')">⬇ Download Random</button>
+	</div>
 
 	<!-- Stat Cards -->
 	<div class="stat-cards" id="statCards">
@@ -341,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	function numMinFilter(hv, rv) { return parseNum(rv) >= parseNum(hv); }
 	function floatMinFilter(hv, rv) { return parseFloat2(rv) >= parseFloat2(hv); }
 
-	var table = new Tabulator("#grype-table", {
+	var table = window.table = new Tabulator("#grype-table", {
 		height: "65vh",
 		layout: "fitDataFill",
 		placeholder: "Loading data…",
