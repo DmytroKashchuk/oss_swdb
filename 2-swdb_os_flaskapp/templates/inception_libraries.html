@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Inception · Libraries{% endblock %}
+
+{% block extra_head %}
+<style>
+	.stat-cards { display: flex; flex-wrap: wrap; gap: .75rem; margin-bottom: 1rem; }
+	.stat-card {
+		background: #fff; border: 1px solid #e0e0e0; border-radius: 6px;
+		padding: .55rem 1rem; min-width: 150px; text-align: center; flex: 1 1 150px;
+	}
+	.stat-card .stat-value { font-size: 1.4rem; font-weight: 700; color: #333; }
+	.stat-card .stat-label { font-size: .72rem; color: #888; text-transform: uppercase; letter-spacing: .3px; }
+	.stat-card.total .stat-value { color: #333; }
+	.stat-card.shown .stat-value { color: #0d6efd; }
+	.stat-card.matches .stat-value { color: #6f42c1; }
+	.stat-card.size .stat-value { color: #198754; }
+	.stat-card.projects  .stat-value { color: #d63384; }
+	.stat-card.vendors   .stat-value { color: #fd7e14; }
+	.stat-card.products  .stat-value { color: #20c997; }
+	.stat-card.libraries .stat-value { color: #0dcaf0; }
+
+	.toolbar {
+		display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+		margin-bottom: .75rem;
+	}
+	.toolbar input.form-control { max-width: 360px; }
+	.notice {
+		font-size: .8rem; color: #6c757d; margin-bottom: .5rem;
+	}
+	.notice .warn { color: #b8860b; font-weight: 600; }
+
+	#inception-table { font-size: .8rem; }
+	.purl-cell, .cpe-cell, .path-cell {
+		font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+		font-size: .73rem; word-break: break-all;
+	}
+	.badge-lang { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: .76rem; font-weight: 600; background: #e9ecef; color: #495057; }
+	.badge-pkg  { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: .76rem; font-weight: 600; background: #fff3cd; color: #664d03; }
+	.badge-vendor  { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: .76rem; font-weight: 700; background: #ffe5d0; color: #fd7e14; }
+	.badge-product { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: .76rem; font-weight: 600; background: #d1f2eb; color: #117a65; }
+	.badge-library { display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: .76rem; font-weight: 600; background: #e0f7fa; color: #006064; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Inception · Libraries</h4>
+		<a href="{{ url_for('download', dataset='inception_libraries') }}" class="btn btn-sm btn-outline-secondary">⬇ Download CSV (full)</a>
+	</div>
+
+	<div class="notice">
+		Large dataset (~1&nbsp;GB, millions of rows). Pagination, sorting and filtering run <strong>server-side</strong>.
+		Type in any column header to filter (case-insensitive substring) &mdash; press <kbd>Enter</kbd> to apply.
+		Use the <em>Global search</em> box to match across <strong>all</strong> columns. Filters are cached after the first scan.
+		Filtered results are capped at <span id="capLabel">200,000</span> matches per filter.
+	</div>
+
+	<div class="stat-cards">
+		<div class="stat-card total">
+			<div class="stat-value" id="statTotal">-</div>
+			<div class="stat-label">Total rows</div>
+		</div>
+		<div class="stat-card projects">
+			<div class="stat-value" id="statProjects">-</div>
+			<div class="stat-label">Unique projects</div>
+		</div>
+		<div class="stat-card vendors">
+			<div class="stat-value" id="statVendors">-</div>
+			<div class="stat-label">Unique vendors</div>
+		</div>
+		<div class="stat-card products">
+			<div class="stat-value" id="statProducts">-</div>
+			<div class="stat-label">Unique products</div>
+		</div>
+		<div class="stat-card libraries">
+			<div class="stat-value" id="statLibraries">-</div>
+			<div class="stat-label">Unique libraries</div>
+		</div>
+		<div class="stat-card matches">
+			<div class="stat-value" id="statMatches">-</div>
+			<div class="stat-label">Matches (filter)</div>
+		</div>
+		<div class="stat-card shown">
+			<div class="stat-value" id="statShown">-</div>
+			<div class="stat-label">Shown on page</div>
+		</div>
+		<div class="stat-card size">
+			<div class="stat-value" id="statPage">-</div>
+			<div class="stat-label">Page</div>
+		</div>
+	</div>
+
+	<div class="toolbar">
+		<input type="text" id="globalSearch" class="form-control form-control-sm" placeholder="Global search (any column)…">
+		<button id="btnClear" class="btn btn-sm btn-outline-secondary">Clear filters</button>
+		<span class="notice ms-auto" id="loadNotice"></span>
+	</div>
+
+	<div id="inception-table"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	function escHtml(s) {
+		return (s == null ? "" : String(s))
+			.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+	}
+	function langFmt(cell) { var v = (cell.getValue() || "").trim(); return v ? '<span class="badge-lang">' + escHtml(v) + '</span>' : ""; }
+	function pkgFmt(cell)  { var v = (cell.getValue() || "").trim(); return v ? '<span class="badge-pkg">' + escHtml(v) + '</span>' : ""; }
+	function monoFmt(cls)  { return function (cell) { var v = (cell.getValue() || "").trim(); return v ? '<span class="' + cls + '">' + escHtml(v) + '</span>' : ""; }; }
+	function tagFmt(cls)   { return function (cell) { var v = (cell.getValue() || "").trim(); return v ? '<span class="' + cls + '">' + escHtml(v) + '</span>' : ""; }; }
+
+	var HFILTER_PH = "type + Enter";
+	// Replace `project` slot with three derived columns (vendor/product/library)
+	var DERIVED_ORDER = ["vendor", "product", "library"];
+	var COL_DEFS = {
+		vendor:    { title: "Vendor",        width: 130, formatter: tagFmt("badge-vendor") },
+		product:   { title: "Product",       width: 160, formatter: tagFmt("badge-product") },
+		library:   { title: "Library (proj)", width: 200, formatter: tagFmt("badge-library") },
+		name:      { title: "Library Name",  width: 220 },
+		version:   { title: "Version",       width: 130 },
+		type:      { title: "Type",          width: 100 },
+		purl:      { title: "PURL",          width: 320, formatter: monoFmt("purl-cell") },
+		cpe:       { title: "CPE",           width: 320, formatter: monoFmt("cpe-cell")  },
+		language:  { title: "Language",      width: 110, formatter: langFmt },
+		pkg_type:  { title: "Package Type",  width: 140, formatter: pkgFmt },
+		path:      { title: "Path",          width: 320, formatter: monoFmt("path-cell") },
+	};
+
+	function buildColumns(header) {
+		var fields = [];
+		header.forEach(function (h) {
+			if (h === "project") {
+				DERIVED_ORDER.forEach(function (d) { fields.push(d); });
+			} else {
+				fields.push(h);
+			}
+		});
+		return fields.map(function (h) {
+			var def = COL_DEFS[h] || { title: h, width: 160 };
+			return Object.assign({
+				field: h,
+				headerSort: false,
+				headerFilter: "input",
+				headerFilterPlaceholder: HFILTER_PH,
+				headerFilterLiveFilter: false,
+			}, def);
+		});
+	}
+
+	var notice = document.getElementById("loadNotice");
+	function setLoading(on, msg) {
+		notice.textContent = on ? (msg || "Loading…") : (msg || "");
+		notice.style.color = on ? "#6c757d" : (msg ? "#b8860b" : "");
+	}
+
+	function buildTable(meta) {
+		document.getElementById("statTotal").textContent = (meta.total || 0).toLocaleString();
+		document.getElementById("capLabel").textContent = (meta.filter_cap || 0).toLocaleString();
+		var baseStats = meta.stats || {};
+		function applyStats(s, filtered) {
+			s = s || {};
+			document.getElementById("statProjects").textContent  = (s.projects  || 0).toLocaleString();
+			document.getElementById("statVendors").textContent   = (s.vendors   || 0).toLocaleString();
+			document.getElementById("statProducts").textContent  = (s.products  || 0).toLocaleString();
+			document.getElementById("statLibraries").textContent = (s.libraries || 0).toLocaleString();
+			// Update labels so the user knows they reflect the active filter
+			var suffix = filtered ? " (filter)" : "";
+			document.querySelector(".stat-card.projects  .stat-label").textContent = "Unique projects"  + suffix;
+			document.querySelector(".stat-card.vendors   .stat-label").textContent = "Unique vendors"   + suffix;
+			document.querySelector(".stat-card.products  .stat-label").textContent = "Unique products"  + suffix;
+			document.querySelector(".stat-card.libraries .stat-label").textContent = "Unique libraries" + suffix;
+		}
+		applyStats(baseStats, false);
+
+		var globalQ = "";
+		var lastResponse = null;
+
+		function refreshStatsFromLast(params) {
+			var r = lastResponse || {};
+			document.getElementById("statMatches").textContent = (r.total || 0).toLocaleString()
+				+ (r.truncated ? "+ (capped)" : "");
+			document.getElementById("statShown").textContent = (r.data || []).length.toLocaleString();
+			document.getElementById("statPage").textContent = ((params && params.page) || 1) + " / " + (r.last_page || 1);
+			applyStats(r.filtered ? r.stats : baseStats, !!r.filtered);
+			console.debug("[inception] stats refresh", { filtered: r.filtered, total: r.total, stats: r.stats });
+		}
+
+		var table = window.table = new Tabulator("#inception-table", {
+			height: "70vh",
+			layout: "fitDataFill",
+			placeholder: "Loading data…",
+			columns: buildColumns(meta.header),
+			ajaxURL: "{{ url_for('api_inception_libraries') }}",
+			ajaxConfig: "GET",
+			ajaxParams: function () { return globalQ ? { q: globalQ } : {}; },
+			pagination: true,
+			paginationMode: "remote",
+			paginationSize: 50,
+			paginationSizeSelector: [25, 50, 100, 250, 500],
+			filterMode: "remote",
+			ajaxResponse: function (url, params, response) {
+				lastResponse = response;
+				refreshStatsFromLast(params);
+				if (response.truncated) {
+					setLoading(false, "Filter matches were capped at " + (response.filter_cap || 0).toLocaleString() + " rows (stats reflect the cap).");
+				} else {
+					setLoading(false, "");
+				}
+				return response;
+			},
+			ajaxError: function (xhr, textStatus) {
+				setLoading(false, "Error loading data: " + textStatus);
+			},
+		});
+
+		// Backup hook in case ajaxResponse fires too early on filter-only changes.
+		table.on("dataLoaded", function () { refreshStatsFromLast({ page: table.getPage() }); });
+		table.on("dataLoading", function () { setLoading(true, "Loading…"); });
+
+		// Global search: stored in `globalQ`, picked up by ajaxParams on every request
+		// (so it persists across pagination + combines with header filters).
+		var search = document.getElementById("globalSearch");
+		var debounceTimer = null;
+		function applyGlobal() {
+			var q = search.value.trim();
+			if (q === globalQ) return;
+			globalQ = q;
+			table.setPage(1);  // triggers reload with new ajaxParams
+		}
+		search.addEventListener("input", function () {
+			clearTimeout(debounceTimer);
+			debounceTimer = setTimeout(applyGlobal, 400);
+		});
+		search.addEventListener("keydown", function (e) {
+			if (e.key === "Enter") { clearTimeout(debounceTimer); applyGlobal(); }
+		});
+		document.getElementById("btnClear").addEventListener("click", function () {
+			search.value = "";
+			globalQ = "";
+			table.clearHeaderFilter();
+			table.setPage(1);
+		});
+	}
+
+	setLoading(true, "Indexing large file (first request only)…");
+	fetch("{{ url_for('api_inception_libraries_meta') }}")
+		.then(function (r) { return r.json(); })
+		.then(function (meta) { setLoading(false, ""); buildTable(meta); })
+		.catch(function (err) {
+			setLoading(false, "Failed to load metadata: " + err.message);
+		});
+});
+</script>
+{% endblock %}

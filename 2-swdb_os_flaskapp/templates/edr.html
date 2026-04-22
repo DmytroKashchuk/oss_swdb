@@ -1,38 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Supply Chain Security — ERD</title>
+{% extends "base.html" %}
+
+{% block title %}Supply Chain Security — ERD{% endblock %}
+
+{% block extra_head %}
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#fafaf8;--surface:#fff;--border:#e4e2db;--text:#1a1a18;--muted:#6b6a65;--dim:#9c9a92;--teal:#0f6e56;--teal-bg:#e1f5ee;--purple:#534ab7;--purple-bg:#eeedfe;--coral:#993c1d;--coral-bg:#faece7;--blue:#185fa5;--blue-bg:#e6f1fb;--amber:#854f0b;--amber-bg:#faeeda;--green:#3b6d11;--green-bg:#eaf3de}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:1.5rem 1rem 4rem}
-.wrap{max-width:100%;margin:0 auto}
-header{margin-bottom:1.5rem;border-bottom:1px solid var(--border);padding-bottom:1rem;max-width:1400px;margin-left:auto;margin-right:auto}
-header h1{font-size:24px;font-weight:600;letter-spacing:-.5px}
-header p{color:var(--muted);font-size:13px;margin-top:6px}
-.erd-legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 auto 16px;font-size:12px;color:var(--muted);padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;max-width:1400px}
+:root{--erd-surface:#fff;--erd-border:#e4e2db;--erd-text:#1a1a18;--erd-muted:#6b6a65;--erd-dim:#9c9a92;--teal:#0f6e56;--teal-bg:#e1f5ee;--purple:#534ab7;--purple-bg:#eeedfe;--coral:#993c1d;--coral-bg:#faece7;--blue:#185fa5;--blue-bg:#e6f1fb;--amber:#854f0b;--amber-bg:#faeeda;--green:#3b6d11;--green-bg:#eaf3de}
+
+.erd-page{font-family:'DM Sans',sans-serif;color:var(--erd-text);line-height:1.5}
+.erd-page header{margin-bottom:1.25rem;border-bottom:1px solid var(--erd-border);padding-bottom:.85rem}
+.erd-page header h1{font-size:22px;font-weight:600;letter-spacing:-.5px;margin:0}
+.erd-page header p{color:var(--erd-muted);font-size:13px;margin-top:6px;margin-bottom:0}
+
+.erd-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.erd-legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12px;color:var(--erd-muted);padding:10px 14px;background:var(--erd-surface);border:1px solid var(--erd-border);border-radius:8px;flex:1;min-width:280px}
 .erd-legend span{display:flex;align-items:center;gap:6px}
 .erd-legend .ld{width:22px;height:2.5px;border-radius:1px}
+.erd-actions{display:flex;gap:8px;align-items:center}
+.erd-actions button{font-family:inherit;font-size:12px;padding:6px 12px;border:1px solid var(--erd-border);background:var(--erd-surface);color:var(--erd-text);border-radius:6px;cursor:pointer;transition:background .15s}
+.erd-actions button:hover{background:#f1efe8}
+.zoom-group{display:inline-flex;border:1px solid var(--erd-border);border-radius:6px;overflow:hidden;background:var(--erd-surface)}
+.zoom-group button{border:none;border-radius:0;padding:6px 10px;font-size:13px;line-height:1;min-width:34px}
+.zoom-group button + button{border-left:1px solid var(--erd-border)}
+.zoom-group #erdZoomLabel{font-size:11px;font-variant-numeric:tabular-nums;color:var(--erd-muted)}
 
-.erd-wrap{overflow:hidden;border:1px solid var(--border);border-radius:8px;background:#f4f3ee;background-image:radial-gradient(circle,#dcdbd4 1px,transparent 1px);background-size:20px 20px;height:80vh;min-height:600px;cursor:grab;position:relative}
+.erd-wrap{overflow:hidden;border:1px solid var(--erd-border);border-radius:8px;background:#f4f3ee;background-image:radial-gradient(circle,#dcdbd4 1px,transparent 1px);background-size:20px 20px;height:78vh;min-height:600px;cursor:grab;position:relative}
 .erd-wrap.panning{cursor:grabbing}
 .erd-wrap.panning *{cursor:grabbing!important}
 .erd{position:absolute;width:2400px;height:1700px;top:0;left:0;will-change:transform}
 
-.eb{position:absolute;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.eb.fut{border-style:dashed;border-color:var(--dim);background:#fdfcf9}
+.eb{position:absolute;background:var(--erd-surface);border:1px solid var(--erd-border);border-radius:10px;overflow:hidden;z-index:2;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.eb.fut{border-style:dashed;border-color:var(--erd-dim);background:#fdfcf9}
 .eh{padding:8px 12px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;cursor:grab;user-select:none}
 .eh:active{cursor:grabbing}
 .eb.dragging{z-index:10;box-shadow:0 8px 24px rgba(0,0,0,.15)}
 .eh .n{width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
-.eh .s{font-size:10px;font-weight:500;color:var(--muted);margin-left:auto}
+.eh .s{font-size:10px;font-weight:500;color:var(--erd-muted);margin-left:auto}
 
-.tbl{font-size:11px;border-top:1px solid var(--border)}
+.tbl{font-size:11px;border-top:1px solid var(--erd-border)}
 .tbl table{border-collapse:collapse;width:100%;font-family:'JetBrains Mono',monospace}
-.tbl thead th{text-align:left;padding:5px 8px;font-size:9.5px;color:var(--muted);font-weight:600;background:#f6f5f0;border-bottom:1px solid var(--border);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+.tbl thead th{text-align:left;padding:5px 8px;font-size:9.5px;color:var(--erd-muted);font-weight:600;background:#f6f5f0;border-bottom:1px solid var(--erd-border);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
 .tbl tbody td{padding:4px 8px;border-bottom:1px solid #f1efe8;white-space:nowrap;font-size:10.5px}
 .tbl tbody tr:last-child td{border-bottom:none}
 .tbl tbody tr:nth-child(even) td{background:#fafaf6}
@@ -45,16 +52,33 @@ td.url{color:var(--blue);max-width:180px;overflow:hidden;text-overflow:ellipsis}
 
 svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
 
-.hint{font-size:12px;color:var(--muted);margin:0 auto 10px;max-width:1400px;display:flex;align-items:center;gap:6px}
-.hint svg{width:14px;height:14px;stroke:var(--muted);fill:none;stroke-width:2}
+.hint{font-size:12px;color:var(--erd-muted);margin:0 0 10px;display:flex;align-items:center;gap:6px}
+.hint svg{width:14px;height:14px;stroke:var(--erd-muted);fill:none;stroke-width:2}
+
+/* propagation highlighting */
+.tbl tbody tr{cursor:pointer}
+.tbl tbody tr:hover td{background:#f3f0e6!important}
+body.has-trace .tbl tbody tr td{opacity:.28;transition:opacity .12s}
+body.has-trace .tbl tbody tr.hl td{opacity:1;background:#fff5cc!important;box-shadow:inset 3px 0 0 #d4a017}
+body.has-trace .tbl tbody tr.hl td.pk-col{background:#ffe9a8!important}
+body.has-trace .tbl tbody tr.hl td.fk-col{background:#ffe9a8!important}
+body.has-trace .eb{opacity:.55;transition:opacity .15s}
+body.has-trace .eb.has-hl{opacity:1;box-shadow:0 0 0 2px #d4a017,0 4px 14px rgba(212,160,23,.25)}
+.trace-badge{display:none;align-items:center;gap:8px;font-size:12px;color:var(--erd-text);background:#fff5cc;border:1px solid #d4a017;padding:6px 10px;border-radius:6px}
+body.has-trace .trace-badge{display:inline-flex}
+.trace-badge button{font:inherit;font-size:11px;padding:3px 8px;border:1px solid #d4a017;background:#fff;border-radius:4px;cursor:pointer}
+.trace-badge button:hover{background:#fffbe6}
 </style>
-</head>
-<body>
-<div class="wrap">
+{% endblock %}
+
+{% block content %}
+<div class="erd-page">
 <header>
 <h1>Supply chain security — ERD with example rows</h1>
 <p>7 tables. Drag any box by its header. Joins shown by colored keys (PK=teal, FK=blue).</p>
 </header>
+
+<div class="erd-toolbar">
 <div class="erd-legend">
 <span><span class="ld" style="background:#0F6E56"></span> Product + VendorName</span>
 <span><span class="ld" style="background:#534AB7"></span> project</span>
@@ -62,13 +86,24 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 <span><span class="ld" style="background:#993c1d"></span> lib_github_url</span>
 <span><span class="ld" style="background:#9c9a92;height:0;border-top:2px dashed #9c9a92"></span> superset / aggregation</span>
 </div>
-<div class="hint"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg> Click & drag the empty canvas to pan. Drag a box by its header to move it.</div>
+<div class="erd-actions">
+<span class="trace-badge" id="traceBadge"><span id="traceLabel"></span><button type="button" id="traceClear">Clear</button></span>
+<div class="zoom-group" role="group" aria-label="Zoom controls">
+<button type="button" id="erdZoomOut" title="Zoom out (or Ctrl/⌘ + scroll)">−</button>
+<button type="button" id="erdZoomReset" title="Reset zoom to 100%"><span id="erdZoomLabel">100%</span></button>
+<button type="button" id="erdZoomIn" title="Zoom in (or Ctrl/⌘ + scroll)">+</button>
+</div>
+<button type="button" id="erdReset" title="Reset boxes, pan, and zoom">Reset layout</button>
+</div>
+</div>
+
+<div class="hint"><svg viewBox="0 0 24 24"><path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/></svg> Click & drag the empty canvas to pan. Drag a box by its header to move it. <strong style="margin-left:6px">Click any row</strong> to trace its propagation across all tables.</div>
 
 <div class="erd-wrap">
 <div class="erd" id="erd">
 
 <!-- 1: open_source.csv -->
-<div class="eb" id="e1" style="left:40px;top:40px">
+<div class="eb" id="e1" data-default-left="40" data-default-top="40" style="left:40px;top:40px">
 <div class="eh" style="background:var(--teal-bg)"><span class="n" style="background:var(--teal)">1</span> open_source.csv <span class="s">10K rows</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">GitHubLink</th><th>IsOS</th><th>Category</th></tr></thead>
@@ -84,7 +119,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 2: main.csv -->
-<div class="eb" id="e2" style="left:560px;top:40px">
+<div class="eb" id="e2" data-default-left="560" data-default-top="40" style="left:560px;top:40px">
 <div class="eh" style="background:var(--purple-bg)"><span class="n" style="background:var(--purple)">2</span> main.csv <span class="s">30 cols</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">project</th><th>Total Ent.</th><th>gh_stars</th><th>gh_lang</th><th>components</th><th>vulns</th><th>critical</th><th>high</th></tr></thead>
@@ -100,7 +135,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 3: grype.csv -->
-<div class="eb" id="e3" style="left:560px;top:430px">
+<div class="eb" id="e3" data-default-left="560" data-default-top="430" style="left:560px;top:430px">
 <div class="eh" style="background:var(--coral-bg)"><span class="n" style="background:var(--coral)">3</span> grype.csv <span class="s">49 cols</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th class="fk-col">project</th><th>total_libs</th><th>uniq_libs</th><th>vulns</th><th>avg_cvss</th><th>max_cvss</th><th>%fix</th><th>%vuln</th><th>syft_lang</th></tr></thead>
@@ -116,7 +151,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 4: libraries_vulns.csv -->
-<div class="eb" id="e4" style="left:40px;top:830px">
+<div class="eb" id="e4" data-default-left="40" data-default-top="830" style="left:40px;top:830px">
 <div class="eh" style="background:var(--coral-bg)"><span class="n" style="background:var(--coral)">4</span> libraries_vulns.csv <span class="s">209K rows</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="fk-col">project</th><th class="pk-col">name</th><th class="pk-col">version</th><th>language</th><th>pkg_type</th><th>vuln_count</th><th>vulnerable</th></tr></thead>
@@ -135,7 +170,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 5: libraries_links.csv -->
-<div class="eb" id="e5" style="left:1180px;top:830px">
+<div class="eb" id="e5" data-default-left="1180" data-default-top="830" style="left:1180px;top:830px">
 <div class="eh" style="background:var(--blue-bg)"><span class="n" style="background:var(--blue)">5</span> libraries_links.csv <span class="s">37K rows</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="fk-col">project</th><th class="pk-col">name</th><th class="pk-col">version</th><th class="fk-col">lib_github_url</th><th>language</th><th>pkg_type</th></tr></thead>
@@ -153,7 +188,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 6: lib_github_meta (future) -->
-<div class="eb fut" id="e6" style="left:1180px;top:1310px">
+<div class="eb fut" id="e6" data-default-left="1180" data-default-top="1310" style="left:1180px;top:1310px">
 <div class="eh" style="background:var(--blue-bg)"><span class="n" style="background:var(--blue)">6</span> lib_github_meta <span class="s">future · 37K</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="pk-col">lib_github_url</th><th>stars</th><th>forks</th><th>issues</th><th>archived</th><th>last_push</th><th>license</th><th>days_stale</th></tr></thead>
@@ -169,7 +204,7 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 
 <!-- 7: analysis_master (future) -->
-<div class="eb fut" id="e7" style="left:40px;top:1310px">
+<div class="eb fut" id="e7" data-default-left="40" data-default-top="1310" style="left:40px;top:1310px">
 <div class="eh" style="background:var(--green-bg)"><span class="n" style="background:var(--green)">7</span> analysis_master <span class="s">future</span></div>
 <div class="tbl"><table>
 <thead><tr><th class="pk-col">Product</th><th class="pk-col">VendorName</th><th>Category</th><th>total_libs</th><th>%vuln</th><th>avg_lib_stars</th><th>%archived</th><th>days_stale</th><th>vulns</th><th>avg_cvss</th><th>%fix</th></tr></thead>
@@ -188,9 +223,10 @@ svg.lk{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;pointer-e
 </div>
 </div>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
 <script>
-// Get rectangle of a box relative to ERD canvas
 function rect(boxId) {
   var box = document.getElementById(boxId);
   var erd = document.getElementById('erd');
@@ -208,7 +244,6 @@ function rect(boxId) {
   };
 }
 
-// Pick the closest pair of edge midpoints between two boxes (auto-routing).
 function bestSides(a, b) {
   var sides = [
     { name:'r', x:a.right,  y:a.cy },
@@ -231,11 +266,9 @@ function bestSides(a, b) {
   return best;
 }
 
-// Build orthogonal path from anchor a (with side) to anchor b (with side).
 function orthPath(a, b) {
   var horizA = (a.name === 'l' || a.name === 'r');
   var horizB = (b.name === 'l' || b.name === 'r');
-  // Stub-out distance from each box edge
   var stub = 24;
   var ax2 = a.x + (a.name==='r'?stub:a.name==='l'?-stub:0);
   var ay2 = a.y + (a.name==='b'?stub:a.name==='t'?-stub:0);
@@ -286,7 +319,6 @@ function drawERD() {
     var dash = e.dashed ? ' stroke-dasharray="6,5"' : '';
     out += '<path d="' + d + '" stroke="' + e.c + '" stroke-width="2" fill="none" marker-end="url(#ar)" opacity="0.8"' + dash + '/>';
 
-    // Label at midpoint of bounding box of the two anchors
     var lx = (pair.a.x + pair.b.x) / 2;
     var ly = (pair.a.y + pair.b.y) / 2 - 6;
     out += '<text x="' + lx + '" y="' + ly + '" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="500" fill="' + e.c + '" paint-order="stroke" stroke="#f4f3ee" stroke-width="4" stroke-linejoin="round">' + e.lb + '</text>';
@@ -325,8 +357,9 @@ function initDrag() {
   function move(clientX, clientY) {
     if (!dragging) return;
     var cR = erd.getBoundingClientRect();
-    var x = clientX - cR.left - offX;
-    var y = clientY - cR.top - offY;
+    var s = window.__erdScale || 1;
+    var x = (clientX - cR.left) / s - offX / s;
+    var y = (clientY - cR.top) / s - offY / s;
     x = Math.max(0, Math.min(x, erd.offsetWidth - dragging.offsetWidth));
     y = Math.max(0, Math.min(y, erd.offsetHeight - dragging.offsetHeight));
     dragging.style.left = x + 'px';
@@ -352,15 +385,38 @@ function initDrag() {
 function initPan() {
   var wrap = document.querySelector('.erd-wrap');
   var erd = document.getElementById('erd');
-  var tx = 0, ty = 0;
+  var tx = 0, ty = 0, scale = 1;
+  var MIN = 0.3, MAX = 2.5;
   var panning = false;
   var startX = 0, startY = 0, startTx = 0, startTy = 0;
 
-  function apply() { erd.style.transform = 'translate(' + tx + 'px,' + ty + 'px)'; }
+  function apply() {
+    erd.style.transformOrigin = '0 0';
+    erd.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+    window.__erdScale = scale;
+    var lbl = document.getElementById('erdZoomLabel');
+    if (lbl) lbl.textContent = Math.round(scale * 100) + '%';
+  }
   apply();
 
+  // Zoom around a focal point in wrap-local coordinates so the point under the
+  // cursor (or the wrap center for buttons) stays put visually.
+  function zoomTo(newScale, focalX, focalY) {
+    newScale = Math.max(MIN, Math.min(MAX, newScale));
+    if (newScale === scale) return;
+    if (focalX == null || focalY == null) {
+      var wR = wrap.getBoundingClientRect();
+      focalX = wR.width / 2;
+      focalY = wR.height / 2;
+    }
+    // World coord under focal stays constant: (focal - t)/scale = (focal - t')/scale'
+    tx = focalX - (focalX - tx) * (newScale / scale);
+    ty = focalY - (focalY - ty) * (newScale / scale);
+    scale = newScale;
+    apply();
+  }
+
   wrap.addEventListener('mousedown', function(e) {
-    // Only pan if click target is NOT inside a box header (boxes still draggable)
     if (e.target.closest('.eh')) return;
     panning = true;
     wrap.classList.add('panning');
@@ -394,10 +450,179 @@ function initPan() {
   function stop() { panning = false; wrap.classList.remove('panning'); }
   document.addEventListener('mouseup', stop);
   document.addEventListener('touchend', stop);
+
+  // Wheel zoom: Ctrl/Cmd + wheel, or trackpad pinch (which arrives as ctrlKey wheel).
+  wrap.addEventListener('wheel', function(e) {
+    if (!(e.ctrlKey || e.metaKey)) return;
+    e.preventDefault();
+    var wR = wrap.getBoundingClientRect();
+    var fx = e.clientX - wR.left;
+    var fy = e.clientY - wR.top;
+    var factor = Math.exp(-e.deltaY * 0.0015);
+    zoomTo(scale * factor, fx, fy);
+  }, {passive:false});
+
+  // Buttons
+  var bIn = document.getElementById('erdZoomIn');
+  var bOut = document.getElementById('erdZoomOut');
+  var bReset = document.getElementById('erdZoomReset');
+  if (bIn) bIn.addEventListener('click', function(){ zoomTo(scale * 1.2); });
+  if (bOut) bOut.addEventListener('click', function(){ zoomTo(scale / 1.2); });
+  if (bReset) bReset.addEventListener('click', function(){ zoomTo(1); });
+
+  // Keyboard: + / - / 0 when canvas is hovered/focused
+  wrap.tabIndex = 0;
+  wrap.addEventListener('keydown', function(e) {
+    if (e.key === '+' || e.key === '=') { e.preventDefault(); zoomTo(scale * 1.2); }
+    else if (e.key === '-' || e.key === '_') { e.preventDefault(); zoomTo(scale / 1.2); }
+    else if (e.key === '0') { e.preventDefault(); zoomTo(1); }
+  });
+
+  window.__erdResetPan = function() { tx = 0; ty = 0; scale = 1; apply(); };
 }
 
-window.addEventListener('load', function() { drawERD(); initDrag(); initPan(); });
+function initReset() {
+  var btn = document.getElementById('erdReset');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.eb').forEach(function(box) {
+      var dl = box.getAttribute('data-default-left');
+      var dt = box.getAttribute('data-default-top');
+      if (dl !== null) box.style.left = dl + 'px';
+      if (dt !== null) box.style.top = dt + 'px';
+    });
+    if (window.__erdResetPan) window.__erdResetPan();
+    drawERD();
+  });
+}
+
+// ---- Propagation trace -----------------------------------------------
+// For each table, declare which columns (0-based index) form which join key.
+// Keys: pv = Product+VendorName, proj = project, nv = name+version,
+//       gh = github url (libraries_links lib_github_url, open_source GitHubLink, lib_github_meta lib_github_url).
+var TRACE_SCHEMA = {
+  e1: { pv:[0,1], gh:[2] },
+  e2: { pv:[0,1], proj:[2] },
+  e3: { pv:[0,1], proj:[2] },
+  e4: { proj:[0], nv:[1,2] },
+  e5: { proj:[0], nv:[1,2], gh:[3] },
+  e6: { gh:[0] },
+  e7: { pv:[0,1] }
+};
+
+function normKey(kind, parts) {
+  var v = parts.map(function(s){ return (s == null ? '' : String(s)).trim(); }).join('||');
+  if (kind === 'proj') {
+    // Strip a trailing .cdx so e2 matches e3/e4/e5
+    v = v.replace(/\.cdx$/i, '');
+  }
+  if (kind === 'gh') {
+    // Normalize github urls: lowercase, strip protocol/trailing slash
+    v = v.toLowerCase().replace(/^https?:\/\//,'').replace(/\/+$/,'');
+  }
+  return kind + ':' + v;
+}
+
+function rowKeys(rowEl) {
+  var box = rowEl.closest('.eb');
+  if (!box) return [];
+  var schema = TRACE_SCHEMA[box.id];
+  if (!schema) return [];
+  var cells = rowEl.children;
+  var keys = [];
+  Object.keys(schema).forEach(function(kind) {
+    var idxs = schema[kind];
+    var parts = idxs.map(function(i){ return cells[i] ? cells[i].textContent : ''; });
+    if (parts.every(function(p){ return p && p.trim() !== ''; })) {
+      keys.push(normKey(kind, parts));
+    }
+  });
+  return keys;
+}
+
+function allTraceableRows() {
+  var out = [];
+  Object.keys(TRACE_SCHEMA).forEach(function(boxId) {
+    var box = document.getElementById(boxId);
+    if (!box) return;
+    box.querySelectorAll('tbody tr').forEach(function(tr) {
+      out.push({ tr: tr, keys: rowKeys(tr) });
+    });
+  });
+  return out;
+}
+
+function clearTrace() {
+  document.body.classList.remove('has-trace');
+  document.querySelectorAll('.eb').forEach(function(b){ b.classList.remove('has-hl'); });
+  document.querySelectorAll('.tbl tbody tr.hl').forEach(function(r){ r.classList.remove('hl'); });
+}
+
+function applyTrace(startRow) {
+  var universe = allTraceableRows();
+  var selected = new Set();
+  var keys = new Set(rowKeys(startRow));
+  if (keys.size === 0) return; // nothing to trace from this row
+  selected.add(startRow);
+
+  var changed = true;
+  // Transitive closure: any row sharing a key joins the set, contributing its keys.
+  while (changed) {
+    changed = false;
+    universe.forEach(function(item) {
+      if (selected.has(item.tr)) return;
+      for (var i = 0; i < item.keys.length; i++) {
+        if (keys.has(item.keys[i])) {
+          selected.add(item.tr);
+          item.keys.forEach(function(k){ keys.add(k); });
+          changed = true;
+          break;
+        }
+      }
+    });
+  }
+
+  document.body.classList.add('has-trace');
+  document.querySelectorAll('.tbl tbody tr.hl').forEach(function(r){ r.classList.remove('hl'); });
+  document.querySelectorAll('.eb').forEach(function(b){ b.classList.remove('has-hl'); });
+  selected.forEach(function(tr) {
+    tr.classList.add('hl');
+    var box = tr.closest('.eb');
+    if (box) box.classList.add('has-hl');
+  });
+
+  // Update badge label with the most descriptive key (prefer pv > proj > nv > gh)
+  var label = document.getElementById('traceLabel');
+  if (label) {
+    var pick = null;
+    var order = ['pv:','proj:','nv:','gh:'];
+    for (var i=0; i<order.length && !pick; i++) {
+      keys.forEach(function(k){ if (!pick && k.indexOf(order[i]) === 0) pick = k; });
+    }
+    var pretty = pick ? pick.replace(/^pv:/, 'Product+Vendor: ').replace(/^proj:/, 'project: ').replace(/^nv:/, 'name+version: ').replace(/^gh:/, 'github: ').replace(/\|\|/g, ' / ') : 'trace';
+    label.textContent = 'Tracing ' + pretty + '  ·  ' + selected.size + ' row(s)';
+  }
+}
+
+function initTrace() {
+  // Delegated click on any data row
+  document.querySelectorAll('.tbl tbody tr').forEach(function(tr) {
+    tr.addEventListener('click', function(ev) {
+      ev.stopPropagation();
+      // Toggle off if clicking the same already-highlighted starter row when nothing else changes
+      if (tr.classList.contains('hl') && document.body.classList.contains('has-trace')) {
+        // Only clear if user clicks the row a second time directly
+        clearTrace();
+        return;
+      }
+      applyTrace(tr);
+    });
+  });
+  var clr = document.getElementById('traceClear');
+  if (clr) clr.addEventListener('click', function(ev){ ev.stopPropagation(); clearTrace(); });
+}
+
+window.addEventListener('load', function() { drawERD(); initDrag(); initPan(); initReset(); initTrace(); });
 window.addEventListener('resize', drawERD);
 </script>
-</body>
-</html>
+{% endblock %}

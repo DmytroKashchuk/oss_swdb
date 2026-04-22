@@ -52,6 +52,9 @@
 						<a class="nav-link {% if request.endpoint == 'grype' %}active{% endif %}" href="{{ url_for('grype') }}">Grype</a>
 					</li>
 					<li class="nav-item">
+						<a class="nav-link {% if request.endpoint == 'edr' %}active{% endif %}" href="{{ url_for('edr') }}">EDR</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link {% if request.endpoint == 'libraries' %}active{% endif %}" href="{{ url_for('libraries') }}">Libraries</a>
 					</li>
 					<li class="nav-item">
@@ -62,6 +65,12 @@
 					</li>
 					<li class="nav-item">
 						<a class="nav-link {% if request.endpoint == 'vulnerabilities' %}active{% endif %}" href="{{ url_for('vulnerabilities') }}">Vulnerabilities</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle {% if request.endpoint and request.endpoint.startswith('inception') %}active{% endif %}" href="#" id="navInceptionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Inception</a>
+						<ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navInceptionDropdown">
+							<li><a class="dropdown-item {% if request.endpoint == 'inception_libraries' %}active{% endif %}" href="{{ url_for('inception_libraries') }}">Libraries</a></li>
+						</ul>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link {% if request.endpoint == 'readme' %}active{% endif %}" href="{{ url_for('readme') }}">README</a>
