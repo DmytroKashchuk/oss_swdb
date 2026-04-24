@@ -29,6 +29,9 @@ for f in sorted(glob.glob(os.path.join(SBOM_DIR, "*.cdx.json"))):
             "path": get_prop(c.get("properties"), "syft:location:0:path"),
         })
 
+# remove duplicated rows based on project, name, version (if any)
+rows = list({(r["project"], r["name"], r["version"]): r for r in rows}.values())
+
 with open(OUTPUT, "w", newline="") as out:
     w = csv.DictWriter(out, fieldnames=rows[0].keys())
     w.writeheader()

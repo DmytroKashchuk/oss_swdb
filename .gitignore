@@ -1,4 +1,7 @@
 *.csv
+*.bak
+5-generate_sbom/sboms/*.json
+*/sboms/*.json
 
 # Virtual environments
 venv/
