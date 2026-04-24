@@ -1,0 +1,250 @@
+{% extends "base.html" %}
+
+{% block title %}Inception · Graph{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://unpkg.com/vis-network@9.1.9/styles/vis-network.min.css">
+<style>
+	.graph-toolbar {
+		display: flex; flex-wrap: wrap; gap: .5rem; align-items: center;
+		margin-bottom: .75rem;
+	}
+	.graph-toolbar .form-control,
+	.graph-toolbar .form-select { max-width: 220px; }
+	.graph-info { font-size: .8rem; color: #6c757d; }
+	.graph-info .warn { color: #b8860b; font-weight: 600; }
+	#graph {
+		height: 75vh; width: 100%;
+		border: 1px solid #dee2e6; border-radius: 6px;
+		background: #fafbfc;
+	}
+	.legend { font-size: .78rem; display: inline-flex; gap: .9rem; align-items: center; }
+	.legend .swatch {
+		display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+		margin-right: .25rem; vertical-align: middle;
+	}
+	.swatch.product  { background: #fd7e14; }
+	.swatch.library  { background: #20c997; }
+	.swatch.name     { background: #0dcaf0; }
+	.swatch.root     { background: #d63384; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="d-flex align-items-center mb-3">
+		<h4 class="mb-0 me-3">Inception</h4>
+	</div>
+
+	<div class="graph-toolbar">
+		<input type="text" id="rootInput" class="form-control form-control-sm" list="suggestions" placeholder="Product or library name…">
+		<datalist id="suggestions"></datalist>
+		<select id="rootKind" class="form-select form-select-sm" title="Type of root">
+			<option value="auto" selected>Auto-detect</option>
+			<option value="product">Product</option>
+			<option value="library">Library (proj)</option>
+		</select>
+		<select id="depthSel" class="form-select form-select-sm" title="Max depth (hops from root)">
+			<option value="1">depth 1</option>
+			<option value="2" selected>depth 2</option>
+			<option value="3">depth 3</option>
+			<option value="4">depth 4</option>
+			<option value="5">depth 5</option>
+			<option value="6">depth 6</option>
+			<option value="8">depth 8</option>
+			<option value="10">depth 10</option>
+			<option value="max">depth max (unlimited)</option>
+		</select>
+		<select id="capSel" class="form-select form-select-sm" title="Max nodes (safety cap)">
+			<option value="100">100 nodes</option>
+			<option value="200" selected>200 nodes</option>
+			<option value="400">400 nodes</option>
+			<option value="800">800 nodes</option>
+			<option value="1500">1500 nodes</option>
+			<option value="3000">3000 nodes</option>
+			<option value="5000">5000 nodes</option>
+			<option value="max">unlimited (max 20000)</option>
+		</select>
+		<button id="btnGo" class="btn btn-sm btn-primary">Build graph</button>
+		<button id="btnFit" class="btn btn-sm btn-outline-secondary">Fit view</button>
+		<div class="form-check form-check-inline ms-2">
+			<input class="form-check-input" type="checkbox" id="hideIsolated">
+			<label class="form-check-label" for="hideIsolated" title="Hide nodes that have no incoming and no outgoing edges in the visible subgraph">Hide isolated nodes</label>
+		</div>
+		<div class="form-check form-check-inline">
+			<input class="form-check-input" type="checkbox" id="onlyMulti">
+			<label class="form-check-label" for="onlyMulti" title="Show only nodes that have more than one connection (degree > 1) in the visible subgraph">Only nodes with &gt;1 connection</label>
+		</div>
+		<span class="legend ms-3">
+			<span><span class="swatch root"></span>root</span>
+			<span><span class="swatch product"></span>product</span>
+			<span><span class="swatch library"></span>library (has deps)</span>
+			<span><span class="swatch name"></span>leaf name</span>
+		</span>
+		<span class="graph-info ms-auto" id="graphStatus"></span>
+	</div>
+
+	<div id="graph"></div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://unpkg.com/vis-network@9.1.9/standalone/umd/vis-network.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	var status = document.getElementById("graphStatus");
+	function setStatus(msg, warn) {
+		status.textContent = msg || "";
+		status.style.color = warn ? "#b8860b" : "#6c757d";
+	}
+
+	var network = null;
+	var rootIds = new Set();
+	var lastPayload = null;
+
+	var COLORS = {
+		root:    { background: "#fce4ec", border: "#d63384" },
+		product: { background: "#ffe5d0", border: "#fd7e14" },
+		library: { background: "#d1f2eb", border: "#117a65" },
+		name:    { background: "#e0f7fa", border: "#006064" },
+	};
+
+	function nodeStyle(n) {
+		var key = rootIds.has(n.id) ? "root" : n.kind;
+		var c = COLORS[key] || COLORS.name;
+		return {
+			id: n.id,
+			label: n.label,
+			color: { background: c.background, border: c.border, highlight: { background: c.background, border: c.border } },
+			shape: n.kind === "product" ? "diamond" : (n.kind === "library" ? "dot" : "ellipse"),
+			size: rootIds.has(n.id) ? 22 : (n.kind === "library" ? 16 : 12),
+			font: { size: 12, color: "#212529" },
+		};
+	}
+
+	function render(payload) {
+		lastPayload = payload;
+		rootIds = new Set((payload.roots || []).map(function (r) { return r.id; }));
+		var hideIsolated = document.getElementById("hideIsolated").checked;
+		var onlyMulti = document.getElementById("onlyMulti").checked;
+		var allNodes = payload.nodes || [];
+		var allEdges = payload.edges || [];
+
+		var visibleIds;
+		if (hideIsolated) {
+			var connected = new Set();
+			allEdges.forEach(function (e) { connected.add(e.source); connected.add(e.target); });
+			// Always keep the roots visible even if isolated
+			rootIds.forEach(function (id) { connected.add(id); });
+			visibleIds = connected;
+		} else {
+			visibleIds = new Set(allNodes.map(function (n) { return n.id; }));
+		}
+
+		if (onlyMulti) {
+			var degree = {};
+			allEdges.forEach(function (e) {
+				if (!visibleIds.has(e.source) || !visibleIds.has(e.target)) return;
+				degree[e.source] = (degree[e.source] || 0) + 1;
+				degree[e.target] = (degree[e.target] || 0) + 1;
+			});
+			var filtered = new Set();
+			visibleIds.forEach(function (id) {
+				if ((degree[id] || 0) > 1 || rootIds.has(id)) filtered.add(id);
+			});
+			visibleIds = filtered;
+		}
+
+		var nodes = allNodes.filter(function (n) { return visibleIds.has(n.id); }).map(nodeStyle);
+		var edges = allEdges
+			.filter(function (e) { return visibleIds.has(e.source) && visibleIds.has(e.target); })
+			.map(function (e, i) {
+				return { id: "e" + i, from: e.source, to: e.target, arrows: "to", color: { color: "#adb5bd" }, smooth: { type: "dynamic" } };
+			});
+
+		var data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+		var options = {
+			physics: {
+				solver: "forceAtlas2Based",
+				forceAtlas2Based: { gravitationalConstant: -45, springLength: 110, springConstant: 0.08 },
+				stabilization: { iterations: 200 },
+			},
+			interaction: { hover: true, tooltipDelay: 150, navigationButtons: false, keyboard: true },
+			edges: { width: 1 },
+		};
+		var container = document.getElementById("graph");
+		if (network) { network.destroy(); }
+		network = new vis.Network(container, data, options);
+		network.once("stabilizationIterationsDone", function () { network.fit(); });
+	}
+
+	function buildGraph() {
+		var q = document.getElementById("rootInput").value.trim();
+		if (!q) { setStatus("Type a product or library to start.", true); return; }
+		var kind = document.getElementById("rootKind").value;
+		var depth = document.getElementById("depthSel").value;
+		var cap = document.getElementById("capSel").value;
+		setStatus("Building graph…");
+		fetch("{{ url_for('api_inception_graph') }}?q=" + encodeURIComponent(q)
+			+ "&kind=" + encodeURIComponent(kind)
+			+ "&depth=" + encodeURIComponent(depth)
+			+ "&max_nodes=" + encodeURIComponent(cap))
+			.then(function (r) { return r.json(); })
+			.then(function (payload) {
+				if (payload.error) { setStatus(payload.error, true); return; }
+				if (!payload.nodes || !payload.nodes.length) {
+					setStatus("No matches for \"" + q + "\".", true);
+					return;
+				}
+				render(payload);
+				var shownN = network.body.data.nodes.length;
+				var shownE = network.body.data.edges.length;
+				var msg = shownN + " nodes / " + shownE + " edges shown";
+				if (shownN !== payload.nodes.length) {
+					msg += " (filtered from " + payload.nodes.length + ")";
+				}
+				msg += " — depth " + payload.depth;
+				if (payload.truncated) { msg += ", truncated at cap"; }
+				setStatus(msg, payload.truncated);
+			})
+			.catch(function (err) { setStatus("Error: " + err.message, true); });
+	}
+
+	document.getElementById("btnGo").addEventListener("click", buildGraph);
+	document.getElementById("rootInput").addEventListener("keydown", function (e) {
+		if (e.key === "Enter") buildGraph();
+	});
+	document.getElementById("btnFit").addEventListener("click", function () { if (network) network.fit(); });
+	function onFilterChange() {
+		if (!lastPayload) return;
+		render(lastPayload);
+		var shownN = network.body.data.nodes.length;
+		var shownE = network.body.data.edges.length;
+		setStatus(shownN + " nodes / " + shownE + " edges shown (filtered from " + lastPayload.nodes.length + ")");
+	}
+	document.getElementById("hideIsolated").addEventListener("change", onFilterChange);
+	document.getElementById("onlyMulti").addEventListener("change", onFilterChange);
+
+	// Lightweight autocomplete via <datalist>: show first chunk of products + projects
+	setStatus("Loading suggestions…");
+	fetch("{{ url_for('api_inception_graph_meta') }}")
+		.then(function (r) { return r.json(); })
+		.then(function (meta) {
+			var dl = document.getElementById("suggestions");
+			var list = (meta.products_sample || []).concat(meta.projects_sample || []);
+			// dedup + cap to keep DOM light
+			var seen = {}; var html = "";
+			for (var i = 0; i < list.length && i < 5000; i++) {
+				var v = list[i];
+				if (!v || seen[v]) continue;
+				seen[v] = true;
+				html += "<option value=\"" + v.replace(/"/g, "&quot;") + "\">";
+			}
+			dl.innerHTML = html;
+			setStatus("Ready. " + (meta.products_total || 0).toLocaleString() + " products, "
+				+ (meta.projects_total || 0).toLocaleString() + " projects indexed.");
+		})
+		.catch(function (err) { setStatus("Suggestions failed to load: " + err.message, true); });
+});
+</script>
+{% endblock %}

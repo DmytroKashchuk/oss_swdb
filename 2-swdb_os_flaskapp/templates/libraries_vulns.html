@@ -43,6 +43,30 @@
 	.stat-card.vuln-unique-lib-ver .stat-value { color: #ab2d3c; }
 	.stat-card.total-vulns .stat-value { color: #842029; }
 	.stat-card.vuln-pct .stat-value { color: #d63384; }
+	.stat-card.kev .stat-value { color: #842029; }
+	.stat-card.kev-ransom .stat-value { color: #6a1a20; }
+	.kev-badge {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 700;
+		background: #842029;
+		color: #fff;
+		letter-spacing: .3px;
+	}
+	.kev-ransom {
+		display: inline-block;
+		padding: 1px 6px;
+		margin-left: 4px;
+		border-radius: 3px;
+		font-size: .7rem;
+		font-weight: 600;
+		background: #ffe5d0;
+		color: #984c0c;
+	}
+	.kev-count-pos { font-weight: 700; color: #842029; }
+	.kev-count-zero { color: #999; }
 	.badge-lang {
 		display: inline-block;
 		padding: 1px 7px;
@@ -165,6 +189,22 @@
 			<div class="stat-value" id="statVulnPct">-</div>
 			<div class="stat-label">% Vulnerable</div>
 		</div>
+		<div class="stat-card kev">
+			<div class="stat-value" id="statKevLibs">-</div>
+			<div class="stat-label">KEV Libraries</div>
+		</div>
+		<div class="stat-card kev">
+			<div class="stat-value" id="statTotalKev">-</div>
+			<div class="stat-label">Total KEV Vulns</div>
+		</div>
+		<div class="stat-card kev-ransom">
+			<div class="stat-value" id="statRansomLibs">-</div>
+			<div class="stat-label">Ransomware KEV Libs</div>
+		</div>
+		<div class="stat-card kev-ransom">
+			<div class="stat-value" id="statTotalRansom">-</div>
+			<div class="stat-label">Total Ransom KEV</div>
+		</div>
 	</div>
 
 	<div class="stats-bar">
@@ -201,6 +241,28 @@ document.addEventListener("DOMContentLoaded", function () {
 		var v = (cell.getValue() || "").trim();
 		if (v === "True") return '<span class="badge-vuln-yes">Vulnerable</span>';
 		return '<span class="badge-vuln-no">Clean</span>';
+	}
+
+	function isTrueVal(v) {
+		if (v === true) return true;
+		var s = String(v == null ? "" : v).trim().toLowerCase();
+		return s === "true" || s === "1" || s === "yes" || s === "y";
+	}
+
+	function kevCountFormatter(cell) {
+		var v = parseNum(cell.getValue());
+		if (v === 0) return '<span class="kev-count-zero">0</span>';
+		return '<span class="kev-count-pos">' + v + '</span>';
+	}
+
+	function kevStatusFormatter(cell) {
+		var row = cell.getRow().getData();
+		if (!isTrueVal(row.has_kev)) return "";
+		var html = '<span class="kev-badge" title="Library has CVE listed in CISA KEV">KEV</span>';
+		if (isTrueVal(row.has_ransomware_kev)) {
+			html += '<span class="kev-ransom" title="Used in ransomware campaigns">RANSOM</span>';
+		}
+		return html;
 	}
 
 	function langFormatter(cell) {
@@ -293,6 +355,44 @@ document.addEventListener("DOMContentLoaded", function () {
 				width: 110,
 			},
 			{
+				title: "KEV",
+				field: "has_kev",
+				formatter: kevStatusFormatter,
+				hozAlign: "center",
+				headerFilter: "list",
+				headerFilterParams: { values: { "": "All", "kev": "KEV only", "ransom": "Ransomware KEV", "none": "No KEV" } },
+				headerFilterFunc: function (hv, rv, rd) {
+					if (!hv) return true;
+					if (hv === "kev") return isTrueVal(rd.has_kev);
+					if (hv === "ransom") return isTrueVal(rd.has_ransomware_kev);
+					if (hv === "none") return !isTrueVal(rd.has_kev);
+					return true;
+				},
+				width: 110,
+			},
+			{
+				title: "KEV #",
+				field: "kev_count",
+				sorter: numSorter,
+				formatter: kevCountFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: function (hv, rv) { return parseNum(rv) >= parseNum(hv); },
+				width: 80,
+			},
+			{
+				title: "Ransom KEV #",
+				field: "ransomware_kev_count",
+				sorter: numSorter,
+				formatter: kevCountFormatter,
+				hozAlign: "center",
+				headerFilter: "number",
+				headerFilterPlaceholder: "Min…",
+				headerFilterFunc: function (hv, rv) { return parseNum(rv) >= parseNum(hv); },
+				width: 110,
+			},
+			{
 				title: "Language",
 				field: "language",
 				formatter: langFormatter,
@@ -362,6 +462,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		var vulnUniqueLibs = new Set();
 		var vulnUniqueLibVer = new Set();
 		var totalVulns = 0;
+		var kevLibs = 0;
+		var ransomLibs = 0;
+		var totalKev = 0;
+		var totalRansom = 0;
 
 		items.forEach(function (r) {
 			if (r.project) projects.add(r.project);
@@ -381,6 +485,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				if (r.name) vulnUniqueLibs.add(r.name);
 				if (r.name) vulnUniqueLibVer.add(r.name + "|||" + ver);
 			}
+			totalKev += parseNum(r.kev_count);
+			totalRansom += parseNum(r.ransomware_kev_count);
+			if (isTrueVal(r.has_kev)) kevLibs++;
+			if (isTrueVal(r.has_ransomware_kev)) ransomLibs++;
 		});
 
 		var pct = items.length ? ((vulnLibs / items.length) * 100).toFixed(1) + "%" : "0%";
@@ -398,6 +506,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById("statVulnUniqueLibVer").textContent = vulnUniqueLibVer.size.toLocaleString();
 		document.getElementById("statTotalVulns").textContent = totalVulns.toLocaleString();
 		document.getElementById("statVulnPct").textContent = pct;
+		document.getElementById("statKevLibs").textContent = kevLibs.toLocaleString();
+		document.getElementById("statTotalKev").textContent = totalKev.toLocaleString();
+		document.getElementById("statRansomLibs").textContent = ransomLibs.toLocaleString();
+		document.getElementById("statTotalRansom").textContent = totalRansom.toLocaleString();
 	}
 
 	table.on("dataFiltered", function () { setTimeout(refreshStats, 0); });

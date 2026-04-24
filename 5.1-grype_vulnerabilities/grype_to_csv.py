@@ -105,6 +105,10 @@ for f in sorted(glob.glob(os.path.join(VULN_DIR, "*.json"))):
             "kev_product": kev_product,
         })
 
+
+# remove duplicated rows based on project, vuln_id, pkg_name, pkg_version (if any)
+rows = list({(r["project"], r["vuln_id"], r["pkg_name"], r["pkg_version"]): r for r in rows}.values())
+
 with open(OUTPUT, "w", newline="") as out:
     w = csv.DictWriter(out, fieldnames=FIELDS)
     w.writeheader()

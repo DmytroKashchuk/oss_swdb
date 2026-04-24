@@ -66,6 +66,27 @@
 	}
 	.fix-fixed { background: #d1e7dd; color: #0f5132; }
 	.fix-not-fixed { background: #f8d7da; color: #842029; }
+	.kev-badge {
+		display: inline-block;
+		padding: 1px 7px;
+		border-radius: 3px;
+		font-size: .76rem;
+		font-weight: 700;
+		background: #842029;
+		color: #fff;
+		letter-spacing: .3px;
+	}
+	.kev-ransom {
+		display: inline-block;
+		padding: 1px 6px;
+		margin-left: 4px;
+		border-radius: 3px;
+		font-size: .7rem;
+		font-weight: 600;
+		background: #ffe5d0;
+		color: #984c0c;
+	}
+	.stat-card.kev .stat-value { color: #842029; }
 	.badge-lang {
 		display: inline-block;
 		padding: 1px 7px;
@@ -150,6 +171,14 @@
 			<div class="stat-value" id="statNotFixed">-</div>
 			<div class="stat-label">Not Fixed</div>
 		</div>
+		<div class="stat-card kev">
+			<div class="stat-value" id="statKev">-</div>
+			<div class="stat-label">CISA KEV</div>
+		</div>
+		<div class="stat-card kev">
+			<div class="stat-value" id="statKevRansom">-</div>
+			<div class="stat-label">KEV · Ransomware</div>
+		</div>
 		<div class="stat-card avg-cvss">
 			<div class="stat-value" id="statAvgCvss">-</div>
 			<div class="stat-label">Avg CVSS</div>
@@ -221,6 +250,22 @@ document.addEventListener("DOMContentLoaded", function () {
 		return v;
 	}
 
+	function isKevTrue(v) {
+		if (v === true) return true;
+		var s = String(v == null ? "" : v).trim().toLowerCase();
+		return s === "true" || s === "1" || s === "yes" || s === "y";
+	}
+
+	function kevFormatter(cell) {
+		var row = cell.getRow().getData();
+		if (!isKevTrue(row.is_kev)) return "";
+		var html = '<span class="kev-badge" title="Listed in CISA Known Exploited Vulnerabilities">KEV</span>';
+		if (isKevTrue(row.kev_ransomware)) {
+			html += '<span class="kev-ransom" title="Known to be used in ransomware campaigns">RANSOM</span>';
+		}
+		return html;
+	}
+
 	function langFormatter(cell) {
 		var v = (cell.getValue() || "").trim();
 		if (!v) return "";
@@ -275,6 +320,20 @@ document.addEventListener("DOMContentLoaded", function () {
 				headerFilter: "input",
 				headerFilterPlaceholder: "Search…",
 				width: 160,
+			},
+			{
+				title: "KEV",
+				field: "is_kev",
+				formatter: kevFormatter,
+				hozAlign: "center",
+				headerFilter: "list",
+				headerFilterParams: { values: { "": "All", "true": "KEV only", "false": "Not KEV" } },
+				headerFilterFunc: function (hv, rv) {
+					if (hv === "" || hv == null) return true;
+					var truthy = isKevTrue(rv);
+					return (hv === "true") ? truthy : !truthy;
+				},
+				width: 110,
 			},
 			{
 				title: "Severity",
@@ -411,6 +470,34 @@ document.addEventListener("DOMContentLoaded", function () {
 				formatter: linkFormatter,
 				width: 220,
 			},
+			{
+				title: "KEV Date Added",
+				field: "kev_date_added",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 130,
+			},
+			{
+				title: "KEV Due Date",
+				field: "kev_due_date",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 130,
+			},
+			{
+				title: "KEV Vendor",
+				field: "kev_vendor",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 140,
+			},
+			{
+				title: "KEV Product",
+				field: "kev_product",
+				headerFilter: "input",
+				headerFilterPlaceholder: "Search…",
+				width: 160,
+			},
 		],
 	});
 
@@ -427,6 +514,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		var sevCounts = { Critical: 0, High: 0, Medium: 0, Low: 0 };
 		var fixedCount = 0;
 		var notFixedCount = 0;
+		var kevCount = 0;
+		var kevRansomCount = 0;
 		var totalCvss = 0;
 		var cvssN = 0;
 		var totalRisk = 0;
@@ -446,6 +535,11 @@ document.addEventListener("DOMContentLoaded", function () {
 			if (fs === "fixed") fixedCount++;
 			else if (fs === "not-fixed") notFixedCount++;
 
+			if (isKevTrue(r.is_kev)) {
+				kevCount++;
+				if (isKevTrue(r.kev_ransomware)) kevRansomCount++;
+			}
+
 			var cvss = parseNum(r.cvss_score);
 			if (cvss > 0) { totalCvss += cvss; cvssN++; }
 			var risk = parseNum(r.risk_score);
@@ -464,6 +558,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById("statLow").textContent = sevCounts.Low.toLocaleString();
 		document.getElementById("statFixed").textContent = fixedCount.toLocaleString();
 		document.getElementById("statNotFixed").textContent = notFixedCount.toLocaleString();
+		document.getElementById("statKev").textContent = kevCount.toLocaleString();
+		document.getElementById("statKevRansom").textContent = kevRansomCount.toLocaleString();
 		document.getElementById("statAvgCvss").textContent = cvssN ? (totalCvss / cvssN).toFixed(1) : "-";
 		document.getElementById("statAvgRisk").textContent = riskN ? (totalRisk / riskN).toFixed(2) : "-";
 		document.getElementById("statAvgEpss").textContent = epssN ? ((totalEpss / epssN) * 100).toFixed(2) + "%" : "-";

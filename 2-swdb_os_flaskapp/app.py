@@ -103,7 +103,12 @@ def libraries_vulns():
 
 @app.route("/api/libraries-vulns")
 def api_libraries_vulns():
-    return jsonify(load_csv(LIBRARIES_VULNS_DATA_PATH))
+    rows = load_csv(LIBRARIES_VULNS_DATA_PATH)
+    for r in rows:
+        vendor, product, _lib = _split_project(r.get("project", ""))
+        r["vendor"] = vendor
+        r["product"] = product
+    return jsonify(rows)
 
 
 @app.route("/vulnerabilities")
@@ -448,6 +453,231 @@ def api_inception_libraries():
         "filter_cap": _INCEPTION_FILTER_CAP,
         "stats": stats,
         "filtered": bool(filters),
+    })
+
+
+# ---------------------------------------------------------------------------
+# Inception > Graph (transitive dependency graph for libraries)
+# Builds, on first request, an in-memory adjacency index from the same CSV:
+#   - product_to_projs : (vendor_lc, product_lc) -> set(library_proj_lc)
+#   - proj_to_deps     : library_proj_lc        -> set(name_lc)
+#   - proj_set         : set of all library_proj_lc (used to know if a `name`
+#                        is also itself a project that has its own deps)
+#   - label            : id_lc -> display label (preserve original casing)
+# Then a BFS expands a chosen root up to a depth + node cap.
+# ---------------------------------------------------------------------------
+
+_GRAPH_LOCK = threading.Lock()
+_GRAPH_STATE = {
+    "ready": False,
+    "building": False,
+    "product_to_projs": {},
+    "proj_to_deps": {},
+    "proj_set": set(),
+    "label": {},
+    "products": [],   # sorted list of "vendor / product" strings for autocomplete
+    "projects": [],   # sorted list of library(proj) names for autocomplete
+}
+
+
+def _build_graph_index():
+    state = _GRAPH_STATE
+    with _GRAPH_LOCK:
+        if state["ready"] or state["building"]:
+            return
+        state["building"] = True
+    try:
+        product_to_projs = {}
+        proj_to_deps = {}
+        label = {}
+        with open(INCEPTION_LIBRARIES_PATH, "r", encoding="utf-8", newline="") as f:
+            reader = csv.reader(f)
+            header = next(reader)
+            try:
+                pi = header.index("project")
+                ni = header.index("name")
+            except ValueError:
+                raise RuntimeError("inception libraries.csv missing project/name columns")
+            for values in reader:
+                if not values:
+                    continue
+                project = values[pi] if pi < len(values) else ""
+                name = values[ni] if ni < len(values) else ""
+                if not project:
+                    continue
+                vendor, product, library = _split_project(project)
+                v_lc, p_lc, lib_lc = vendor.lower(), product.lower(), library.lower()
+                name_lc = name.lower()
+                if vendor and product:
+                    label.setdefault("product:" + v_lc + "/" + p_lc, vendor + " / " + product)
+                if library:
+                    label.setdefault(lib_lc, library)
+                    if vendor and product:
+                        product_to_projs.setdefault((v_lc, p_lc), set()).add(lib_lc)
+                if name:
+                    label.setdefault(name_lc, name)
+                    if library:
+                        proj_to_deps.setdefault(lib_lc, set()).add(name_lc)
+        proj_set = set(proj_to_deps.keys())
+        products_sorted = sorted({label["product:" + k[0] + "/" + k[1]]
+                                   for k in product_to_projs.keys()})
+        projects_sorted = sorted({label[k] for k in proj_set})
+        with _GRAPH_LOCK:
+            state["product_to_projs"] = product_to_projs
+            state["proj_to_deps"] = proj_to_deps
+            state["proj_set"] = proj_set
+            state["label"] = label
+            state["products"] = products_sorted
+            state["projects"] = projects_sorted
+            state["ready"] = True
+    finally:
+        with _GRAPH_LOCK:
+            state["building"] = False
+
+
+def _ensure_graph_ready():
+    if not _GRAPH_STATE["ready"]:
+        _build_graph_index()
+
+
+def _resolve_root(query, kind):
+    """Pick starting node id(s) for the BFS.
+
+    Returns list of (node_id, node_label, node_kind).
+    `kind` is 'auto' | 'product' | 'library'.
+    """
+    state = _GRAPH_STATE
+    q = (query or "").strip()
+    if not q:
+        return []
+    q_lc = q.lower()
+    roots = []
+    if kind in ("auto", "product"):
+        # exact "vendor / product"
+        if "/" in q:
+            v, _, p = q.partition("/")
+            key = (v.strip().lower(), p.strip().lower())
+            if key in state["product_to_projs"]:
+                lab = state["label"].get("product:" + key[0] + "/" + key[1], q)
+                roots.append(("product:" + key[0] + "/" + key[1], lab, "product"))
+        # any product whose name == q (any vendor)
+        for (v_lc, p_lc) in state["product_to_projs"].keys():
+            if p_lc == q_lc:
+                key = "product:" + v_lc + "/" + p_lc
+                if not any(r[0] == key for r in roots):
+                    roots.append((key, state["label"].get(key, q), "product"))
+        if roots and kind == "product":
+            return roots
+    if kind in ("auto", "library"):
+        if q_lc in state["proj_set"]:
+            roots.append((q_lc, state["label"].get(q_lc, q), "library"))
+        elif q_lc in state["label"]:
+            # a known leaf name (not a project itself) - still a valid root
+            roots.append((q_lc, state["label"].get(q_lc, q), "name"))
+    return roots
+
+
+def _expand_graph(roots, max_depth, max_nodes):
+    state = _GRAPH_STATE
+    nodes = {}    # id -> {id, label, kind, depth}
+    edges = []
+    truncated = False
+
+    def add_node(nid, lab, kind, depth):
+        if nid in nodes:
+            return False
+        nodes[nid] = {"id": nid, "label": lab, "kind": kind, "depth": depth}
+        return True
+
+    frontier = []
+    for nid, lab, kind in roots:
+        add_node(nid, lab, kind, 0)
+        frontier.append((nid, kind, 0))
+
+    while frontier:
+        if len(nodes) >= max_nodes:
+            truncated = True
+            break
+        nid, kind, depth = frontier.pop(0)
+        if depth >= max_depth:
+            continue
+        # Determine outgoing children for this node
+        children = []  # list of (child_id, child_label, child_kind)
+        if kind == "product":
+            _, _, key = nid.partition(":")
+            v_lc, _, p_lc = key.partition("/")
+            for lib_lc in state["product_to_projs"].get((v_lc, p_lc), ()):
+                children.append((lib_lc, state["label"].get(lib_lc, lib_lc), "library"))
+        elif kind in ("library", "name"):
+            for dep_lc in state["proj_to_deps"].get(nid, ()):
+                child_kind = "library" if dep_lc in state["proj_set"] else "name"
+                children.append((dep_lc, state["label"].get(dep_lc, dep_lc), child_kind))
+
+        for cid, clab, ckind in children:
+            if len(nodes) >= max_nodes:
+                truncated = True
+                break
+            is_new = add_node(cid, clab, ckind, depth + 1)
+            edges.append({"source": nid, "target": cid})
+            if is_new:
+                frontier.append((cid, ckind, depth + 1))
+
+    return list(nodes.values()), edges, truncated
+
+
+@app.route("/inception/graph")
+def inception_graph():
+    return render_template("inception_graph.html")
+
+
+@app.route("/api/inception/graph/meta")
+def api_inception_graph_meta():
+    _ensure_graph_ready()
+    s = _GRAPH_STATE
+    return jsonify({
+        "products_sample": s["products"][:5000],
+        "projects_sample": s["projects"][:5000],
+        "products_total": len(s["products"]),
+        "projects_total": len(s["projects"]),
+    })
+
+
+@app.route("/api/inception/graph")
+def api_inception_graph():
+    _ensure_graph_ready()
+    query = request.args.get("q", "")
+    kind = request.args.get("kind", "auto")
+    # depth: 1..20 ; "0" or "max" means unlimited (we cap internally at 50)
+    depth_raw = (request.args.get("depth") or "2").strip().lower()
+    if depth_raw in ("0", "max", "unlimited", "all"):
+        depth = 50
+    else:
+        try:
+            depth = max(1, min(int(depth_raw), 20))
+        except ValueError:
+            depth = 2
+    # max_nodes: 10..20000 ; "0" or "max" means unlimited (cap at 20000)
+    cap_raw = (request.args.get("max_nodes") or "200").strip().lower()
+    if cap_raw in ("0", "max", "unlimited", "all"):
+        max_nodes = 20000
+    else:
+        try:
+            max_nodes = max(10, min(int(cap_raw), 20000))
+        except ValueError:
+            max_nodes = 200
+
+    roots = _resolve_root(query, kind)
+    if not roots:
+        return jsonify({"nodes": [], "edges": [], "truncated": False, "roots": [], "error": "No matching product or library found."})
+
+    nodes, edges, truncated = _expand_graph(roots, depth, max_nodes)
+    return jsonify({
+        "nodes": nodes,
+        "edges": edges,
+        "truncated": truncated,
+        "roots": [{"id": r[0], "label": r[1], "kind": r[2]} for r in roots],
+        "depth": depth,
+        "max_nodes": max_nodes,
     })
 
 
